@@ -1,0 +1,6 @@
+{
+  "name": "Company Tech — Internship Automation System",
+  "description": "Internship application and management automation system with applicant tracking, admin review, offer-letter generation, and status management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

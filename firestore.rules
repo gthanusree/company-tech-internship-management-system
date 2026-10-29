@@ -1,0 +1,101 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Hardened helper functions
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isBootstrappedAdmin() {
+      return isSignedIn() && request.auth.token.email == 'gthanushree1566@gmail.com';
+    }
+
+    function isAdmin() {
+      return isBootstrappedAdmin() || (isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid)));
+    }
+
+    function isValidRole(role) {
+      return role in [
+        'Frontend Developer',
+        'Backend Developer',
+        'Full-Stack Developer',
+        'AI/ML Engineer',
+        'UI/UX Designer',
+        'Graphic Designer',
+        'Digital Marketing Intern',
+        'Social Media Manager',
+        'Content Writer',
+        'Business Development Intern',
+        'Community Manager',
+        'HR Intern'
+      ];
+    }
+
+    function isValidDuration(duration) {
+      return duration in ['1 month', '2 months', '3 months'];
+    }
+
+    function isValidApplicationCreate(data) {
+      return data.keys().hasAll(['applicationId', 'fullName', 'email', 'college', 'yearOfStudy', 'experienceLevel', 'role', 'status'])
+        && data.applicationId is string && data.applicationId.size() > 0 && data.applicationId.size() <= 64
+        && data.fullName is string && data.fullName.size() > 0 && data.fullName.size() <= 100
+        && data.email is string && data.email.size() > 3 && data.email.size() <= 120
+        && data.college is string && data.college.size() > 0 && data.college.size() <= 150
+        && data.yearOfStudy is string && data.yearOfStudy.size() <= 50
+        && data.experienceLevel is string && (data.experienceLevel == 'Fresher' || data.experienceLevel == 'Experienced')
+        && isValidRole(data.role)
+        && data.status == 'Pending';
+    }
+
+    function isValidApplicationUpdate(data) {
+      return data.status in ['Pending', 'Accepted', 'Rejected']
+        && data.applicationId == existing().applicationId
+        && data.email == existing().email
+        && data.fullName == existing().fullName;
+    }
+
+    // Connection testing
+    match /test/{docId} {
+      allow read: if true;
+    }
+
+    // Applications collection
+    match /applications/{appId} {
+      allow get: if isValidId(appId) && (isAdmin() || (isSignedIn() && resource.data.email == request.auth.token.email));
+      allow list: if isAdmin();
+      
+      allow create: if isValidId(appId) && isValidApplicationCreate(incoming()) && incoming().applicationId == appId;
+      
+      allow update: if isValidId(appId) && isAdmin() && isValidApplicationUpdate(incoming()) && (
+        (existing().status == 'Pending' && incoming().status == 'Accepted' && isValidDuration(incoming().internshipDuration) && incoming().diff(existing()).affectedKeys().hasOnly(['status', 'decisionAt', 'internshipDuration', 'joiningDate', 'offerLetterId', 'emailStatus', 'updatedAt'])) ||
+        (existing().status == 'Pending' && incoming().status == 'Rejected' && incoming().diff(existing()).affectedKeys().hasOnly(['status', 'decisionAt', 'emailStatus', 'updatedAt']))
+      );
+
+      allow delete: if false;
+    }
+
+    // Admin registry
+    match /admins/{adminId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+  }
+}

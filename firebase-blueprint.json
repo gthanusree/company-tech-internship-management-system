@@ -1,0 +1,50 @@
+{
+  "entities": {
+    "Application": {
+      "title": "Application",
+      "description": "Internship application submitted by candidate",
+      "type": "object",
+      "properties": {
+        "applicationId": { "type": "string", "maxLength": 64 },
+        "fullName": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "maxLength": 120 },
+        "college": { "type": "string", "maxLength": 150 },
+        "yearOfStudy": { "type": "string", "maxLength": 50 },
+        "experienceLevel": { "type": "string", "maxLength": 50 },
+        "role": { "type": "string", "maxLength": 80 },
+        "resumeUrl": { "type": "string", "maxLength": 5000000 },
+        "resumeFileName": { "type": "string", "maxLength": 200 },
+        "status": { "type": "string", "enum": ["Pending", "Accepted", "Rejected"] },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" },
+        "decisionAt": { "type": "string" },
+        "internshipDuration": { "type": "string", "maxLength": 50 },
+        "joiningDate": { "type": "string", "maxLength": 50 },
+        "offerLetterId": { "type": "string", "maxLength": 64 },
+        "emailStatus": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["applicationId", "fullName", "email", "college", "yearOfStudy", "experienceLevel", "role", "status"]
+    },
+    "Admin": {
+      "title": "Admin",
+      "description": "Authorized administrator profile",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "maxLength": 120 },
+        "role": { "type": "string", "maxLength": 50 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["email", "role"]
+    }
+  },
+  "firestore": {
+    "/applications/{applicationId}": {
+      "schema": "Application",
+      "description": "Internship applications submitted to Company Tech"
+    },
+    "/admins/{adminId}": {
+      "schema": "Admin",
+      "description": "Authorized administrator registry"
+    }
+  }
+}
