@@ -7,7 +7,8 @@ import {
   CheckCircle2, 
   Briefcase,
   FileCheck,
-  UserCheck
+  UserCheck,
+  LogOut
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -15,6 +16,7 @@ interface NavbarProps {
   setActiveView: (view: 'home' | 'apply' | 'track' | 'admin') => void;
   onOpenChecklist: () => void;
   isAdminLoggedIn: boolean;
+  onSignOut?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -22,6 +24,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   setActiveView,
   onOpenChecklist,
   isAdminLoggedIn,
+  onSignOut,
 }) => {
   return (
     <header className="sticky top-0 z-40 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 text-white">
@@ -119,6 +122,16 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-0.5" />
               )}
             </button>
+
+            {onSignOut && (
+              <button
+                onClick={onSignOut}
+                className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white border border-slate-700 transition-colors ml-1"
+                title="Security Gateway / Sign Out"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
+            )}
           </nav>
         </div>
       </div>

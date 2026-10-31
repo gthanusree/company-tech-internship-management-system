@@ -36,7 +36,10 @@ export const RejectModal: React.FC<RejectModalProps> = ({
     try {
       const response = await fetch('/api/applications/reject', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'x-admin-authorization': adminEmail,
+        },
         body: JSON.stringify({
           applicationId: application.applicationId,
           adminEmail,

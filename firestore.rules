@@ -2,12 +2,14 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Default deny all
+    // Default deny all documents unless explicitly granted
     match /{document=**} {
       allow read, write: if false;
     }
 
-    // Hardened helper functions
+    // ------------------------------------------------------------------
+    // Hardened Helper Functions
+    // ------------------------------------------------------------------
     function isValidId(id) {
       return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
     }
@@ -24,10 +26,12 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    // Primary authorized administrator check
     function isBootstrappedAdmin() {
       return isSignedIn() && request.auth.token.email == 'gthanushree1566@gmail.com';
     }
 
+    // Secondary administrator registry check (for RBAC scalability)
     function isAdmin() {
       return isBootstrappedAdmin() || (isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid)));
     }
@@ -53,6 +57,7 @@ service cloud.firestore {
       return duration in ['1 month', '2 months', '3 months'];
     }
 
+    // Strict schema & boundary validation for application intake
     function isValidApplicationCreate(data) {
       return data.keys().hasAll(['applicationId', 'fullName', 'email', 'college', 'yearOfStudy', 'experienceLevel', 'role', 'status'])
         && data.applicationId is string && data.applicationId.size() > 0 && data.applicationId.size() <= 64
@@ -65,6 +70,7 @@ service cloud.firestore {
         && data.status == 'Pending';
     }
 
+    // Immutability checks: core candidate identity cannot be modified during status updates
     function isValidApplicationUpdate(data) {
       return data.status in ['Pending', 'Accepted', 'Rejected']
         && data.applicationId == existing().applicationId
@@ -72,30 +78,64 @@ service cloud.firestore {
         && data.fullName == existing().fullName;
     }
 
-    // Connection testing
-    match /test/{docId} {
+    // Connection probe strictly limited to test collection document for health verification
+    match /test/connection {
       allow read: if true;
     }
 
-    // Applications collection
+    // ------------------------------------------------------------------
+    // Applications Collection Rules
+    // ------------------------------------------------------------------
     match /applications/{appId} {
+      // Single Document Retrieval:
+      // Allowed only for authorized administrators OR authenticated applicants viewing their own document.
       allow get: if isValidId(appId) && (isAdmin() || (isSignedIn() && resource.data.email == request.auth.token.email));
+
+      // Collection Listing:
+      // Strictly restricted to authorized administrators. Prevents candidate scraping and enumeration.
       allow list: if isAdmin();
       
-      allow create: if isValidId(appId) && isValidApplicationCreate(incoming()) && incoming().applicationId == appId;
+      // Application Intake (Creation):
+      // Public candidates can submit applications provided they satisfy all schema, field size, and role constraints.
+      // Status MUST be 'Pending'.
+      allow create: if isValidId(appId) 
+        && isValidApplicationCreate(incoming()) 
+        && incoming().applicationId == appId;
       
+      // Application Decision Updates:
+      // Strictly restricted to authorized administrators.
+      // Enforces atomic state locking: only 'Pending' records can transition to 'Accepted' or 'Rejected'.
       allow update: if isValidId(appId) && isAdmin() && isValidApplicationUpdate(incoming()) && (
-        (existing().status == 'Pending' && incoming().status == 'Accepted' && isValidDuration(incoming().internshipDuration) && incoming().diff(existing()).affectedKeys().hasOnly(['status', 'decisionAt', 'internshipDuration', 'joiningDate', 'offerLetterId', 'emailStatus', 'updatedAt'])) ||
-        (existing().status == 'Pending' && incoming().status == 'Rejected' && incoming().diff(existing()).affectedKeys().hasOnly(['status', 'decisionAt', 'emailStatus', 'updatedAt']))
+        // Action: Accept Application
+        (
+          existing().status == 'Pending' 
+          && incoming().status == 'Accepted' 
+          && isValidDuration(incoming().internshipDuration) 
+          && incoming().diff(existing()).affectedKeys().hasOnly([
+            'status', 'decisionAt', 'internshipDuration', 'joiningDate', 
+            'offerLetterId', 'emailStatus', 'updatedAt', 'adminNotes'
+          ])
+        )
+        ||
+        // Action: Reject Application
+        (
+          existing().status == 'Pending' 
+          && incoming().status == 'Rejected' 
+          && incoming().diff(existing()).affectedKeys().hasOnly([
+            'status', 'decisionAt', 'emailStatus', 'updatedAt', 'adminNotes'
+          ])
+        )
       );
 
+      // Deletion is completely prohibited to ensure a permanent audit trail
       allow delete: if false;
     }
 
-    // Admin registry
+    // ------------------------------------------------------------------
+    // Admin Directory Collection (Strictly restricted to authorized admins)
+    // ------------------------------------------------------------------
     match /admins/{adminId} {
-      allow read: if isSignedIn();
-      allow write: if isAdmin();
+      allow read, write: if isAdmin();
     }
   }
 }

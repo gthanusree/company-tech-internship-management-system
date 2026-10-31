@@ -8,13 +8,14 @@ import { AdminDashboard } from './components/AdminDashboard.tsx';
 import { ConfirmationModal } from './components/ConfirmationModal.tsx';
 import { OfferLetterModal } from './components/OfferLetterModal.tsx';
 import { VerificationChecklistModal } from './components/VerificationChecklistModal.tsx';
+import { SignInGateway } from './components/SignInGateway.tsx';
 import { Footer } from './components/Footer.tsx';
 import { Application } from './types/index.ts';
 import { testConnection } from './lib/firebase.ts';
 import { AlertCircle, CheckCircle2, Sparkles } from 'lucide-react';
 
 export default function App() {
-  const [activeView, setActiveView] = useState<'home' | 'apply' | 'track' | 'admin'>('home');
+  const [activeView, setActiveView] = useState<'auth' | 'home' | 'apply' | 'track' | 'admin'>('auth');
   const [selectedRole, setSelectedRole] = useState<string>('Frontend Developer');
 
   // Confirmation Modal state
@@ -73,6 +74,47 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Render initial Security Gateway / Sign-In Screen
+  if (activeView === 'auth') {
+    return (
+      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-blue-500 selection:text-white">
+        <SignInGateway
+          onAdminLogin={(adminEmail) => {
+            setActiveView('admin');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          onApplicantAccess={() => {
+            setActiveView('home');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          onTrackStatusAccess={() => {
+            setActiveView('track');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          onOpenChecklist={() => setIsChecklistOpen(true)}
+        />
+
+        {/* 20-Point E2E Verification Checklist Modal */}
+        <VerificationChecklistModal
+          isOpen={isChecklistOpen}
+          onClose={() => setIsChecklistOpen(false)}
+          onNavigateToApply={() => {
+            setActiveView('apply');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          onNavigateToTrack={() => {
+            setActiveView('track');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          onNavigateToAdmin={() => {
+            setActiveView('admin');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-blue-500 selection:text-white">
       {/* Top Banner if offline */}
@@ -92,6 +134,10 @@ export default function App() {
         }}
         onOpenChecklist={() => setIsChecklistOpen(true)}
         isAdminLoggedIn={true}
+        onSignOut={() => {
+          setActiveView('auth');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
       />
 
       {/* Main View Router */}

@@ -18,10 +18,14 @@ import {
   where, 
   orderBy, 
   getDocFromServer,
-  serverTimestamp
+  serverTimestamp,
+  setLogLevel
 } from 'firebase/firestore';
 import firebaseConfig from '../../firebase-applet-config.json';
 import { Application, ApplicationStatus, InternshipDuration } from '../types/index.ts';
+
+// Silence internal gRPC connection stream logging
+setLogLevel('silent');
 
 // Initialize Firebase App
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
@@ -89,10 +93,13 @@ export async function testConnection(): Promise<{ ok: boolean; message: string }
   try {
     await getDocFromServer(doc(db, 'test', 'connection'));
     return { ok: true, message: 'Connected to Firestore' };
-  } catch (error) {
+  } catch (error: any) {
     if (error instanceof Error && error.message.includes('the client is offline')) {
       console.warn("Please check your Firebase configuration or network connectivity.");
       return { ok: false, message: 'Client offline' };
+    }
+    if (error?.code === 'permission-denied' || error?.message?.includes('Missing or insufficient permissions')) {
+      return { ok: true, message: 'Firestore connected (Rules pending manual deployment in Firebase Console)' };
     }
     // Non-fatal if test collection document simply doesn't exist yet
     return { ok: true, message: 'Firestore connection established' };

@@ -221,6 +221,7 @@ export async function sendEmailMessage({
 
       const data = await response.json();
       if (response.ok && data.id) {
+        console.log(`[EmailService: Success] Email accepted by provider (Message ID: ${data.id})`);
         return {
           success: true,
           status: 'sent',
@@ -231,7 +232,14 @@ export async function sendEmailMessage({
           details: 'Dispatched successfully via Resend API',
         };
       } else {
-        console.error('Resend API Error response:', data);
+        const errorMsg = data?.message || 'Resend provider error';
+        console.error(`[EmailService: Error] Provider rejected send. HTTP ${response.status}: ${errorMsg}`);
+
+        let userFriendlyNotice = errorMsg;
+        if (errorMsg.includes('testing emails to your own email address')) {
+          userFriendlyNotice = 'Resend sandbox restriction: The default domain (onboarding@resend.dev) only delivers to your registered account email. To deliver to arbitrary student inboxes, verify a custom domain at resend.com/domains.';
+        }
+
         return {
           success: false,
           status: 'failed',
@@ -239,11 +247,11 @@ export async function sendEmailMessage({
           recipient: to,
           subject,
           timestamp: new Date().toISOString(),
-          details: data?.message || 'Resend provider error',
+          details: userFriendlyNotice,
         };
       }
     } catch (err: any) {
-      console.error('Network error contacting Resend API:', err);
+      console.error('[EmailService: Network Error] Failed to reach Resend API:', err.message);
       return {
         success: false,
         status: 'failed',
@@ -251,24 +259,24 @@ export async function sendEmailMessage({
         recipient: to,
         subject,
         timestamp: new Date().toISOString(),
-        details: err.message || 'Network error',
+        details: err.message || 'Network error reaching email provider',
       };
     }
   }
 
   // Simulated delivery mode (High fidelity logs, audit trail, no crash)
-  console.log(`[EmailService: Simulated Send] To: ${to} | Subject: "${subject}" | From: ${from}`);
+  console.warn(`[EmailService: Notice] Real email delivery skipped: EMAIL_PROVIDER_API_KEY is not configured or using placeholder. Running in simulated audit mode.`);
   if (attachments && attachments.length > 0) {
-    console.log(`[EmailService: Simulated Send] Included ${attachments.length} attachment(s): ${attachments.map(a => a.filename).join(', ')}`);
+    console.log(`[EmailService: Notice] Included ${attachments.length} attachment(s): ${attachments.map(a => a.filename).join(', ')}`);
   }
 
   return {
-    success: true,
+    success: false,
     status: 'simulated',
     messageId: 'sim_' + Math.random().toString(36).substring(2, 10),
     recipient: to,
     subject,
     timestamp: new Date().toISOString(),
-    details: 'Simulated send recorded in audit log. Configure EMAIL_PROVIDER_API_KEY in .env for live inbox delivery.',
+    details: 'EMAIL_PROVIDER_API_KEY is not configured in .env. Delivery recorded in simulation mode. Configure Resend key for real inbox dispatch.',
   };
 }

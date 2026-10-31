@@ -245,5 +245,9 @@ export function getOfferLetterDataUrl(application: Application): string {
 
 export function getOfferLetterBase64(application: Application): string {
   const doc = generateOfferLetterPdf(application);
-  return doc.output('datauristring').split(',')[1] || '';
+  if (typeof Buffer !== 'undefined') {
+    return Buffer.from(doc.output('arraybuffer')).toString('base64');
+  }
+  const dataUri = doc.output('datauristring');
+  return dataUri.includes(',') ? dataUri.split(',')[1] : dataUri;
 }

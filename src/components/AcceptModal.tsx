@@ -14,7 +14,7 @@ interface AcceptModalProps {
   application: Application | null;
   adminEmail: string;
   onClose: () => void;
-  onSuccess: (updatedApp: Application) => void;
+  onSuccess: (updatedApp: Application, emailResult?: any) => void;
 }
 
 export const AcceptModal: React.FC<AcceptModalProps> = ({
@@ -54,7 +54,10 @@ export const AcceptModal: React.FC<AcceptModalProps> = ({
     try {
       const response = await fetch('/api/applications/accept', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'x-admin-authorization': adminEmail,
+        },
         body: JSON.stringify({
           applicationId: application.applicationId,
           internshipDuration: duration,
@@ -69,7 +72,7 @@ export const AcceptModal: React.FC<AcceptModalProps> = ({
         throw new Error(data.error || 'Failed to accept application.');
       }
 
-      onSuccess(data.application);
+      onSuccess(data.application, data.emailResult);
     } catch (err: any) {
       setError(err.message || 'Error executing acceptance.');
     } finally {

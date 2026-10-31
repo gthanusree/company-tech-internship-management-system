@@ -82,7 +82,11 @@ export const AdminDashboard: React.FC = () => {
     setFetchError(null);
 
     try {
-      const response = await fetch('/api/applications');
+      const response = await fetch('/api/applications', {
+        headers: {
+          'x-admin-authorization': activeAdminEmail,
+        },
+      });
       const data = await response.json();
 
       if (!response.ok) {
@@ -130,7 +134,7 @@ export const AdminDashboard: React.FC = () => {
   const activeAdminEmail = currentUser?.email || 'gthanushree1566@gmail.com (Evaluator Mode)';
 
   // Decisions update callbacks
-  const handleDecisionSuccess = (updatedApp: Application, actionType: 'accepted' | 'rejected') => {
+  const handleDecisionSuccess = (updatedApp: Application, actionType: 'accepted' | 'rejected', emailResult?: any) => {
     setApplications((prev) =>
       prev.map((app) => (app.applicationId === updatedApp.applicationId ? updatedApp : app))
     );
@@ -140,12 +144,21 @@ export const AdminDashboard: React.FC = () => {
     setAppToAccept(null);
     setAppToReject(null);
 
-    const msg = actionType === 'accepted'
-      ? `Application ${updatedApp.applicationId} successfully Accepted. Offer letter generated & email dispatched.`
-      : `Application ${updatedApp.applicationId} successfully Rejected. Outcome email sent.`;
+    let msg = '';
+    if (actionType === 'accepted') {
+      if (emailResult?.status === 'sent') {
+        msg = `Application ${updatedApp.applicationId} successfully Accepted. Offer letter PDF generated & confirmed delivered to applicant inbox (Provider ID: ${emailResult.messageId}).`;
+      } else if (emailResult?.status === 'failed') {
+        msg = `Application ${updatedApp.applicationId} marked Accepted & Offer PDF generated. Notice: Email delivery failed: ${emailResult.details}. Candidate can download their offer letter directly from the tracking portal.`;
+      } else {
+        msg = `Application ${updatedApp.applicationId} marked Accepted & Offer PDF generated. (Email simulated: configure EMAIL_PROVIDER_API_KEY in .env for live inbox delivery).`;
+      }
+    } else {
+      msg = `Application ${updatedApp.applicationId} successfully Rejected. Outcome notification recorded.`;
+    }
 
     setActionSuccessMessage(msg);
-    setTimeout(() => setActionSuccessMessage(null), 5000);
+    setTimeout(() => setActionSuccessMessage(null), 8000);
   };
 
   // Calculate Statistics
@@ -686,7 +699,7 @@ export const AdminDashboard: React.FC = () => {
             application={appToAccept}
             adminEmail={activeAdminEmail}
             onClose={() => setAppToAccept(null)}
-            onSuccess={(updated) => handleDecisionSuccess(updated, 'accepted')}
+            onSuccess={(updated, emailResult) => handleDecisionSuccess(updated, 'accepted', emailResult)}
           />
         )}
 
