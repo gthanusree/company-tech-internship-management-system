@@ -2,7 +2,7 @@ import React from 'react';
 import { Building2, ShieldCheck, Mail, GitBranch, CheckCircle2 } from 'lucide-react';
 
 interface FooterProps {
-  onNavigate: (view: 'home' | 'apply' | 'track' | 'admin') => void;
+  onNavigate: (view: 'home' | 'apply' | 'track' | 'admin' | 'auth') => void;
   onOpenChecklist: () => void;
 }
 
@@ -85,6 +85,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenChecklist }) =
                 >
                   <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
                   <span>Admissions Dashboard</span>
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => onNavigate('auth')}
+                  className="hover:text-white transition-colors flex items-center gap-1.5"
+                >
+                  <span>Security Gateway / Sign-In</span>
                 </button>
               </li>
               <li className="text-slate-500 text-[11px]">

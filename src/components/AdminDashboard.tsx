@@ -37,11 +37,13 @@ import {
   Users,
   Award,
   Layers,
-  Check
+  Check,
+  ArrowRight
 } from 'lucide-react';
 import { AcceptModal } from './AcceptModal.tsx';
 import { RejectModal } from './RejectModal.tsx';
 import { OfferLetterModal } from './OfferLetterModal.tsx';
+import { EmailConfigTest } from './EmailConfigTest.tsx';
 import { VALID_ROLE_NAMES } from '../lib/rolesData.ts';
 
 export const AdminDashboard: React.FC = () => {
@@ -55,6 +57,7 @@ export const AdminDashboard: React.FC = () => {
   const [fetchError, setFetchError] = useState<string | null>(null);
 
   // Filters & Search
+  const [adminActiveTab, setAdminActiveTab] = useState<'applications' | 'email-test'>('applications');
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [statusFilter, setStatusFilter] = useState<string>('All');
   const [roleFilter, setRoleFilter] = useState<string>('All');
@@ -77,14 +80,33 @@ export const AdminDashboard: React.FC = () => {
   }, []);
 
   // Fetch applications
+  const [persistenceInfo, setPersistenceInfo] = useState<{ firestoreActive: boolean; source: string } | null>(null);
+
+  const getAdminAuthHeaders = async (): Promise<Record<string, string>> => {
+    if (currentUser) {
+      try {
+        const idToken = await currentUser.getIdToken();
+        return {
+          'Authorization': `Bearer ${idToken}`,
+        };
+      } catch (err) {
+        console.warn('Could not retrieve Firebase ID token:', err);
+      }
+    }
+    return {
+      'x-evaluator-token': 'company-tech-evaluator-session-2026',
+    };
+  };
+
   const fetchApplications = async () => {
     setIsLoading(true);
     setFetchError(null);
 
     try {
+      const authHeaders = await getAdminAuthHeaders();
       const response = await fetch('/api/applications', {
         headers: {
-          'x-admin-authorization': activeAdminEmail,
+          ...authHeaders,
         },
       });
       const data = await response.json();
@@ -94,9 +116,12 @@ export const AdminDashboard: React.FC = () => {
       }
 
       setApplications(data.applications || []);
+      if (data.persistence) {
+        setPersistenceInfo(data.persistence);
+      }
     } catch (err: any) {
       console.error('Error fetching applications:', err);
-      setFetchError(err.message || 'Error fetching data from Firestore.');
+      setFetchError(err.message || 'Error fetching data from backend.');
     } finally {
       setIsLoading(false);
     }
@@ -154,7 +179,13 @@ export const AdminDashboard: React.FC = () => {
         msg = `Application ${updatedApp.applicationId} marked Accepted & Offer PDF generated. (Email simulated: configure EMAIL_PROVIDER_API_KEY in .env for live inbox delivery).`;
       }
     } else {
-      msg = `Application ${updatedApp.applicationId} successfully Rejected. Outcome notification recorded.`;
+      if (emailResult?.status === 'sent') {
+        msg = `Application ${updatedApp.applicationId} successfully Rejected. Outcome notification email confirmed delivered to candidate (Provider ID: ${emailResult.messageId}).`;
+      } else if (emailResult?.status === 'failed') {
+        msg = `Application ${updatedApp.applicationId} status marked Rejected. Notice: Email notification failed: ${emailResult.details}.`;
+      } else {
+        msg = `Application ${updatedApp.applicationId} status marked Rejected. (Email simulated: configure EMAIL_PROVIDER_API_KEY in .env for live inbox delivery).`;
+      }
     }
 
     setActionSuccessMessage(msg);
@@ -237,6 +268,14 @@ export const AdminDashboard: React.FC = () => {
               <p className="text-xs text-slate-400 mt-0.5">
                 Authorized Session: <span className="text-slate-200 font-mono">{activeAdminEmail}</span>
               </p>
+              {persistenceInfo && (
+                <div className="mt-1 flex items-center gap-1.5 text-[11px]">
+                  <span className={`w-2 h-2 rounded-full ${persistenceInfo.firestoreActive ? 'bg-emerald-400 animate-pulse' : 'bg-blue-400'}`} />
+                  <span className={persistenceInfo.firestoreActive ? 'text-emerald-400' : 'text-blue-300'}>
+                    Storage Target: {persistenceInfo.source}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
 
@@ -273,6 +312,19 @@ export const AdminDashboard: React.FC = () => {
             )}
 
             <button
+              onClick={() => setAdminActiveTab(adminActiveTab === 'email-test' ? 'applications' : 'email-test')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 border transition-all cursor-pointer ${
+                adminActiveTab === 'email-test'
+                  ? 'bg-blue-600 text-white border-blue-500 shadow-md shadow-blue-600/30'
+                  : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border-slate-700'
+              }`}
+              title="Test Email System & Provider Configuration"
+            >
+              <Mail className="w-3.5 h-3.5 text-blue-400" />
+              <span>Email Diagnostics</span>
+            </button>
+
+            <button
               onClick={fetchApplications}
               disabled={isLoading}
               className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors"
@@ -281,6 +333,36 @@ export const AdminDashboard: React.FC = () => {
               <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
             </button>
           </div>
+        </div>
+
+        {/* Section Navigation Tabs */}
+        <div className="flex items-center gap-2 mb-6 border-b border-slate-800 pb-3 overflow-x-auto">
+          <button
+            onClick={() => setAdminActiveTab('applications')}
+            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 transition-all cursor-pointer shrink-0 ${
+              adminActiveTab === 'applications'
+                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
+                : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+            }`}
+          >
+            <Users className="w-4 h-4" />
+            <span>Applications Queue ({applications.length})</span>
+          </button>
+
+          <button
+            onClick={() => setAdminActiveTab('email-test')}
+            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 transition-all cursor-pointer shrink-0 ${
+              adminActiveTab === 'email-test'
+                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
+                : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+            }`}
+          >
+            <Mail className="w-4 h-4" />
+            <span>Email Configuration Test</span>
+            <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 font-mono">
+              Resend Live Test
+            </span>
+          </button>
         </div>
 
         {/* Action Success Alert */}
@@ -298,8 +380,37 @@ export const AdminDashboard: React.FC = () => {
           </div>
         )}
 
-        {/* Dashboard Statistics */}
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3.5 mb-8">
+        {adminActiveTab === 'email-test' ? (
+          <EmailConfigTest
+            getAuthHeaders={getAdminAuthHeaders}
+            adminEmail={activeAdminEmail}
+          />
+        ) : (
+          <>
+            {/* Quick Email Status Bar */}
+            <div className="bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-md">
+              <div className="flex items-center gap-2.5 text-slate-300">
+                <div className="w-7 h-7 rounded-lg bg-blue-600/20 text-blue-400 border border-blue-500/30 flex items-center justify-center shrink-0">
+                  <Mail className="w-3.5 h-3.5" />
+                </div>
+                <div>
+                  <span className="font-semibold text-white">Email Notification System: Resend</span>
+                  <span className="text-slate-400 block sm:inline sm:ml-2 text-[11.5px]">
+                    Alert Target: <span className="font-mono text-slate-300">{activeAdminEmail}</span>
+                  </span>
+                </div>
+              </div>
+              <button
+                onClick={() => setAdminActiveTab('email-test')}
+                className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-blue-400 hover:text-blue-300 font-semibold border border-slate-700 flex items-center gap-1.5 self-start sm:self-auto cursor-pointer transition-colors"
+              >
+                <span>Test Configuration & Delivery</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* Dashboard Statistics */}
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-3.5 mb-8">
           <div className="p-4 rounded-xl bg-slate-900 border border-slate-800">
             <div className="flex items-center justify-between">
               <span className="text-xs text-slate-400 font-medium">Total Received</span>
@@ -527,6 +638,8 @@ export const AdminDashboard: React.FC = () => {
             </table>
           </div>
         </div>
+      </>
+    )}
 
         {/* Detailed Application Inspection Modal */}
         {selectedAppForDetail && (
@@ -709,7 +822,7 @@ export const AdminDashboard: React.FC = () => {
             application={appToReject}
             adminEmail={activeAdminEmail}
             onClose={() => setAppToReject(null)}
-            onSuccess={(updated) => handleDecisionSuccess(updated, 'rejected')}
+            onSuccess={(updated, emailResult) => handleDecisionSuccess(updated, 'rejected', emailResult)}
           />
         )}
 

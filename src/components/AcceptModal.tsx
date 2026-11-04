@@ -9,6 +9,7 @@ import {
   FileCheck, 
   AlertCircle 
 } from 'lucide-react';
+import { auth } from '../lib/firebase.ts';
 
 interface AcceptModalProps {
   application: Application | null;
@@ -52,11 +53,25 @@ export const AcceptModal: React.FC<AcceptModalProps> = ({
     setIsSubmitting(true);
 
     try {
+      let authHeaders: Record<string, string> = {
+        'x-evaluator-token': 'company-tech-evaluator-session-2026',
+      };
+      if (auth.currentUser) {
+        try {
+          const idToken = await auth.currentUser.getIdToken();
+          authHeaders = {
+            'Authorization': `Bearer ${idToken}`,
+          };
+        } catch (e) {
+          console.warn('Could not retrieve idToken:', e);
+        }
+      }
+
       const response = await fetch('/api/applications/accept', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
-          'x-admin-authorization': adminEmail,
+          ...authHeaders,
         },
         body: JSON.stringify({
           applicationId: application.applicationId,

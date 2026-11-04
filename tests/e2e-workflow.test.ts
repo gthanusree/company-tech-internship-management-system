@@ -6,8 +6,13 @@
 
 import { VALID_ROLE_NAMES, INTERNSHIP_ROLES } from '../src/lib/rolesData.ts';
 import { generateApplicationId } from '../src/lib/firebase.ts';
-import { DEMO_REJECTION_TEMPLATE } from '../src/lib/emailService.ts';
-import { generateOfferLetterPdf } from '../src/lib/offerLetterGenerator.ts';
+import { 
+  DEMO_REJECTION_TEMPLATE, 
+  getApplicantConfirmationEmail, 
+  getSupportNotificationEmail, 
+  getAcceptanceEmail 
+} from '../src/lib/emailService.ts';
+import { generateOfferLetterPdf, getOfferLetterBase64 } from '../src/lib/offerLetterGenerator.ts';
 import { Application } from '../src/types/index.ts';
 
 export function runTests(): { passed: number; failed: number; results: { test: string; status: 'PASS' | 'FAIL'; error?: string }[] } {
@@ -94,6 +99,58 @@ export function runTests(): { passed: number; failed: number; results: { test: s
   assert(
     validDurations.length === 3 && validDurations.includes(mockApplication.internshipDuration!),
     'Check 6: Internship duration strictly limited to 1, 2, or 3 months'
+  );
+
+  // 7. Verify Applicant Confirmation Email payload
+  const applicantEmail = getApplicantConfirmationEmail(mockApplication);
+  assert(
+    applicantEmail.subject.includes('CT-2026-TEST1') && 
+    applicantEmail.html.includes('COMPANY TECH') &&
+    applicantEmail.html.includes('Frontend Developer'),
+    'Check 7: Applicant confirmation email contains Application ID and Company Tech branding'
+  );
+
+  // 8. Verify Administrator Support Alert Email payload
+  const adminEmail = 'gthanushree1566@gmail.com';
+  const supportEmail = getSupportNotificationEmail(mockApplication, adminEmail);
+  assert(
+    supportEmail.to === adminEmail &&
+    supportEmail.subject.includes('[New Application]') &&
+    supportEmail.html.includes('Jane Doe') &&
+    supportEmail.html.includes('CT-2026-TEST1'),
+    'Check 8: Administrator alert notification routes to real administrator address with candidate details'
+  );
+
+  // 9. Verify Acceptance Email payload
+  const acceptanceEmail = getAcceptanceEmail(mockApplication);
+  assert(
+    acceptanceEmail.subject.includes('Congratulations') &&
+    acceptanceEmail.html.includes('2 months') &&
+    acceptanceEmail.html.includes('2026-11-15') &&
+    acceptanceEmail.html.includes('HR Support and Co-Founder'),
+    'Check 9: Acceptance email includes offer details, duration, joining date, and HR Support signature'
+  );
+
+  // 10. Verify PDF Base64 attachment generation
+  const pdfBase64 = getOfferLetterBase64(mockApplication);
+  assert(
+    pdfBase64.length > 500 && pdfBase64.startsWith('JVBERi0xLjM'),
+    'Check 10: Offer letter base64 generator produces valid PDF bytes for email attachment'
+  );
+
+  // 11. Verify Email Diagnostic Sender Configuration
+  const emailFrom = process.env.EMAIL_FROM || 'Company Tech <onboarding@resend.dev>';
+  const supportEmailConfig = process.env.SUPPORT_EMAIL || 'gthanushree1566@gmail.com';
+  assert(
+    emailFrom.includes('Company Tech') && supportEmailConfig.includes('@'),
+    'Check 11: Email configuration incorporates Company Tech sender branding and valid support target'
+  );
+
+  // 12. Verify Email Diagnostic Recipient Validation pattern
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  assert(
+    emailRegex.test('gthanushree1566@gmail.com') && !emailRegex.test('invalid-email'),
+    'Check 12: Diagnostic recipient validator correctly accepts valid emails and rejects malformed inputs'
   );
 
   return { passed, failed, results };

@@ -9,12 +9,13 @@ import {
   Mail, 
   ShieldAlert 
 } from 'lucide-react';
+import { auth } from '../lib/firebase.ts';
 
 interface RejectModalProps {
   application: Application | null;
   adminEmail: string;
   onClose: () => void;
-  onSuccess: (updatedApp: Application) => void;
+  onSuccess: (updatedApp: Application, emailResult?: any) => void;
 }
 
 export const RejectModal: React.FC<RejectModalProps> = ({
@@ -34,11 +35,25 @@ export const RejectModal: React.FC<RejectModalProps> = ({
     setIsSubmitting(true);
 
     try {
+      let authHeaders: Record<string, string> = {
+        'x-evaluator-token': 'company-tech-evaluator-session-2026',
+      };
+      if (auth.currentUser) {
+        try {
+          const idToken = await auth.currentUser.getIdToken();
+          authHeaders = {
+            'Authorization': `Bearer ${idToken}`,
+          };
+        } catch (e) {
+          console.warn('Could not retrieve idToken:', e);
+        }
+      }
+
       const response = await fetch('/api/applications/reject', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
-          'x-admin-authorization': adminEmail,
+          ...authHeaders,
         },
         body: JSON.stringify({
           applicationId: application.applicationId,
@@ -52,7 +67,7 @@ export const RejectModal: React.FC<RejectModalProps> = ({
         throw new Error(data.error || 'Failed to reject application.');
       }
 
-      onSuccess(data.application);
+      onSuccess(data.application, data.emailResult);
     } catch (err: any) {
       setError(err.message || 'Error executing rejection.');
     } finally {

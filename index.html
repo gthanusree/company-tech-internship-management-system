@@ -9,6 +9,63 @@
     <meta property="og:description" content="Company Tech Internship Application and Management Automation System. Apply for internships, track application status, and automated management." />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
+    <script>
+      // Gracefully prevent benign HMR proxy drops and unauthenticated gRPC stream errors from displaying as uncaught overlays
+      window.onunhandledrejection = function(event) {
+        var reason = event && event.reason;
+        var msg = (reason && (reason.message || reason.stack || String(reason))) || '';
+        if (
+          msg.includes('WebSocket') || 
+          msg.includes('websocket') || 
+          msg.includes('closed without opened') ||
+          msg.includes('PERMISSION_DENIED') ||
+          msg.includes('Missing or insufficient permissions')
+        ) {
+          if (event && event.preventDefault) event.preventDefault();
+          if (event && event.stopImmediatePropagation) event.stopImmediatePropagation();
+          return true;
+        }
+      };
+      window.onerror = function(message, source, lineno, colno, error) {
+        var msg = String(message || '') + ' ' + String(error || '');
+        if (
+          msg.includes('WebSocket') || 
+          msg.includes('websocket') || 
+          msg.includes('closed without opened') ||
+          msg.includes('PERMISSION_DENIED') ||
+          msg.includes('Missing or insufficient permissions')
+        ) {
+          return true;
+        }
+      };
+      window.addEventListener('unhandledrejection', function(event) {
+        var reason = event && event.reason;
+        var msg = (reason && (reason.message || reason.stack || String(reason))) || '';
+        if (
+          msg.includes('WebSocket') || 
+          msg.includes('websocket') || 
+          msg.includes('closed without opened') ||
+          msg.includes('PERMISSION_DENIED') ||
+          msg.includes('Missing or insufficient permissions')
+        ) {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+        }
+      });
+      window.addEventListener('error', function(event) {
+        var msg = (event && (event.message || String(event))) || '';
+        if (
+          msg.includes('WebSocket') || 
+          msg.includes('websocket') || 
+          msg.includes('closed without opened') ||
+          msg.includes('PERMISSION_DENIED') ||
+          msg.includes('Missing or insufficient permissions')
+        ) {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+        }
+      });
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Navbar } from './components/Navbar.tsx';
 import { Hero } from './components/Hero.tsx';
 import { RolesSection } from './components/RolesSection.tsx';
@@ -11,17 +11,15 @@ import { VerificationChecklistModal } from './components/VerificationChecklistMo
 import { SignInGateway } from './components/SignInGateway.tsx';
 import { Footer } from './components/Footer.tsx';
 import { Application } from './types/index.ts';
-import { testConnection } from './lib/firebase.ts';
-import { AlertCircle, CheckCircle2, Sparkles } from 'lucide-react';
 
 export default function App() {
-  const [activeView, setActiveView] = useState<'auth' | 'home' | 'apply' | 'track' | 'admin'>('auth');
+  const [activeView, setActiveView] = useState<'home' | 'apply' | 'track' | 'admin' | 'auth'>('auth');
   const [selectedRole, setSelectedRole] = useState<string>('Frontend Developer');
 
   // Confirmation Modal state
   const [submittedApp, setSubmittedApp] = useState<Application | null>(null);
 
-  // Status Tracker prefill
+  // Status Tracker prefill credentials
   const [trackerCreds, setTrackerCreds] = useState<{ appId: string; email: string }>({
     appId: '',
     email: '',
@@ -33,34 +31,16 @@ export default function App() {
   // Verification Checklist modal
   const [isChecklistOpen, setIsChecklistOpen] = useState<boolean>(false);
 
-  // Firestore connection status
-  const [dbStatus, setDbStatus] = useState<{ checked: boolean; ok: boolean; message: string }>({
-    checked: false,
-    ok: false,
-    message: 'Connecting to Firestore...',
-  });
-
-  useEffect(() => {
-    // Validate Firestore connection on boot (Skill requirement)
-    testConnection().then((res) => {
-      setDbStatus({
-        checked: true,
-        ok: res.ok,
-        message: res.message,
-      });
-    });
-  }, []);
-
   const handleSelectRole = (roleTitle: string) => {
     setSelectedRole(roleTitle);
     setActiveView('apply');
-    // Scroll to form smoothly
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     setTimeout(() => {
       const formEl = document.getElementById('application-form-section');
       if (formEl) {
         formEl.scrollIntoView({ behavior: 'smooth' });
       }
-    }, 100);
+    }, 150);
   };
 
   const handleApplicationSubmitted = (app: Application) => {
@@ -74,91 +54,39 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Render initial Security Gateway / Sign-In Screen
-  if (activeView === 'auth') {
-    return (
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-blue-500 selection:text-white">
-        <SignInGateway
-          onAdminLogin={(adminEmail) => {
-            setActiveView('admin');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-          onApplicantAccess={() => {
-            setActiveView('home');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-          onTrackStatusAccess={() => {
-            setActiveView('track');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-          onOpenChecklist={() => setIsChecklistOpen(true)}
-        />
-
-        {/* 20-Point E2E Verification Checklist Modal */}
-        <VerificationChecklistModal
-          isOpen={isChecklistOpen}
-          onClose={() => setIsChecklistOpen(false)}
-          onNavigateToApply={() => {
-            setActiveView('apply');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-          onNavigateToTrack={() => {
-            setActiveView('track');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-          onNavigateToAdmin={() => {
-            setActiveView('admin');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-        />
-      </div>
-    );
-  }
+  const navigateTo = (view: 'home' | 'apply' | 'track' | 'admin' | 'auth') => {
+    setActiveView(view);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-blue-500 selection:text-white">
-      {/* Top Banner if offline */}
-      {dbStatus.checked && !dbStatus.ok && (
-        <div className="bg-amber-500/20 text-amber-300 text-xs py-2 px-4 border-b border-amber-500/30 text-center flex items-center justify-center gap-2">
-          <AlertCircle className="w-4 h-4 shrink-0 text-amber-400" />
-          <span>Note: {dbStatus.message}. Verify network connection for real-time Firestore persistence.</span>
-        </div>
-      )}
-
-      {/* Navigation Bar */}
+      {/* Universal Navigation Bar */}
       <Navbar
         activeView={activeView}
-        setActiveView={(v) => {
-          setActiveView(v);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
+        setActiveView={navigateTo}
         onOpenChecklist={() => setIsChecklistOpen(true)}
         isAdminLoggedIn={true}
-        onSignOut={() => {
-          setActiveView('auth');
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
       />
 
       {/* Main View Router */}
       <main className="flex-1">
+        {/* 1. Home / Roles Overview View */}
         {activeView === 'home' && (
           <>
             <Hero
-              onApplyClick={() => {
-                setActiveView('apply');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-              onTrackClick={() => {
-                setActiveView('track');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
+              onApplyClick={() => navigateTo('apply')}
+              onTrackClick={() => navigateTo('track')}
               onExploreRoles={() => {
                 const el = document.getElementById('roles-section');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
+                if (el) {
+                  el.scrollIntoView({ behavior: 'smooth' });
+                }
               }}
             />
-            <RolesSection onSelectRole={handleSelectRole} />
+            <div id="roles-section">
+              <RolesSection onSelectRole={handleSelectRole} />
+            </div>
             <ApplicationForm
               selectedRoleFromHero={selectedRole}
               onSuccess={handleApplicationSubmitted}
@@ -166,30 +94,48 @@ export default function App() {
           </>
         )}
 
+        {/* 2. Direct Apply View */}
         {activeView === 'apply' && (
-          <ApplicationForm
-            selectedRoleFromHero={selectedRole}
-            onSuccess={handleApplicationSubmitted}
-          />
+          <div className="py-8">
+            <ApplicationForm
+              selectedRoleFromHero={selectedRole}
+              onSuccess={handleApplicationSubmitted}
+            />
+          </div>
         )}
 
+        {/* 3. Status Tracker View */}
         {activeView === 'track' && (
-          <StatusTracker
-            initialAppId={trackerCreds.appId}
-            initialEmail={trackerCreds.email}
-            onViewOfferLetter={(app) => setOfferLetterApp(app)}
-          />
+          <div className="py-8">
+            <StatusTracker
+              initialAppId={trackerCreds.appId}
+              initialEmail={trackerCreds.email}
+              onViewOfferLetter={(app) => setOfferLetterApp(app)}
+            />
+          </div>
         )}
 
-        {activeView === 'admin' && <AdminDashboard />}
+        {/* 4. Admin Admissions Dashboard View */}
+        {activeView === 'admin' && (
+          <div className="py-6">
+            <AdminDashboard />
+          </div>
+        )}
+
+        {/* 5. Security Gateway / Sign-In View */}
+        {activeView === 'auth' && (
+          <SignInGateway
+            onAdminLogin={() => navigateTo('admin')}
+            onApplicantAccess={() => navigateTo('home')}
+            onTrackStatusAccess={() => navigateTo('track')}
+            onOpenChecklist={() => setIsChecklistOpen(true)}
+          />
+        )}
       </main>
 
-      {/* Footer */}
+      {/* Universal Footer */}
       <Footer
-        onNavigate={(v) => {
-          setActiveView(v);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
+        onNavigate={navigateTo}
         onOpenChecklist={() => setIsChecklistOpen(true)}
       />
 
@@ -202,7 +148,7 @@ export default function App() {
         />
       )}
 
-      {/* Digital Offer Letter Modal */}
+      {/* Offer Letter Preview Modal */}
       {offerLetterApp && (
         <OfferLetterModal
           application={offerLetterApp}
@@ -214,18 +160,9 @@ export default function App() {
       <VerificationChecklistModal
         isOpen={isChecklistOpen}
         onClose={() => setIsChecklistOpen(false)}
-        onNavigateToApply={() => {
-          setActiveView('apply');
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
-        onNavigateToTrack={() => {
-          setActiveView('track');
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
-        onNavigateToAdmin={() => {
-          setActiveView('admin');
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
+        onNavigateToApply={() => navigateTo('apply')}
+        onNavigateToTrack={() => navigateTo('track')}
+        onNavigateToAdmin={() => navigateTo('admin')}
       />
     </div>
   );
