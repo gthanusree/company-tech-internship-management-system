@@ -96,50 +96,50 @@ export const AcceptModal: React.FC<AcceptModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl text-white relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/45 backdrop-blur-[2px]">
+      <div className="bg-white border border-[#E4E6E2] rounded-2xl max-w-lg w-full p-6 shadow-xl text-[#1C1F1D] relative">
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+        <div className="flex items-center justify-between pb-4 border-b border-[#E4E6E2]">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center">
               <CheckCircle2 className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-bold text-base text-white">Accept Application</h3>
-              <p className="text-xs text-slate-400">Generate offer letter & notify candidate</p>
+              <h3 className="font-bold text-base text-[#1C1F1D]">Accept Application</h3>
+              <p className="text-xs text-[#6E7571]">Generate offer letter & notify candidate</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-1 rounded-lg text-[#6E7571] hover:text-[#1C1F1D] hover:bg-[#F3F4F1] transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Candidate Info Box */}
-        <div className="my-4 p-3.5 rounded-xl bg-slate-950 border border-slate-800/80 text-xs">
+        <div className="my-4 p-3.5 rounded-xl bg-[#F8F9F7] border border-[#E4E6E2] text-xs">
           <div className="flex justify-between mb-1">
-            <span className="text-slate-500">Applicant:</span>
-            <span className="font-bold text-white">{application.fullName}</span>
+            <span className="text-[#6E7571]">Applicant:</span>
+            <span className="font-bold text-[#1C1F1D]">{application.fullName}</span>
           </div>
           <div className="flex justify-between mb-1">
-            <span className="text-slate-500">Role:</span>
-            <span className="text-blue-400 font-semibold">{application.role}</span>
+            <span className="text-[#6E7571]">Role:</span>
+            <span className="text-[#23534A] font-semibold">{application.role}</span>
           </div>
           <div className="flex justify-between mb-1">
-            <span className="text-slate-500">Institution:</span>
-            <span className="text-slate-300">{application.college}</span>
+            <span className="text-[#6E7571]">Institution:</span>
+            <span className="text-[#1C1F1D]">{application.college}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-slate-500">Application ID:</span>
-            <span className="font-mono text-slate-300">{application.applicationId}</span>
+            <span className="text-[#6E7571]">Application ID:</span>
+            <span className="font-mono text-[#1C1F1D]">{application.applicationId}</span>
           </div>
         </div>
 
         {error && (
-          <div className="mb-4 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-300 text-xs flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 shrink-0 text-red-400" />
+          <div className="mb-4 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 shrink-0 text-red-600" />
             <span>{error}</span>
           </div>
         )}
@@ -147,8 +147,8 @@ export const AcceptModal: React.FC<AcceptModalProps> = ({
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Duration Selection (Strictly 1, 2, or 3 months) */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-              Internship Duration <span className="text-emerald-400">*</span>
+            <label className="block text-xs font-semibold uppercase tracking-wider text-[#4B524E] mb-1.5">
+              Internship Duration <span className="text-emerald-700">*</span>
             </label>
             <div className="grid grid-cols-3 gap-2">
               {(['1 month', '2 months', '3 months'] as InternshipDuration[]).map((d) => (
@@ -156,10 +156,10 @@ export const AcceptModal: React.FC<AcceptModalProps> = ({
                   key={d}
                   type="button"
                   onClick={() => setDuration(d)}
-                  className={`py-2 px-3 rounded-xl border text-xs font-semibold transition-all ${
+                  className={`py-2 px-3 rounded-xl border text-xs font-semibold transition-colors cursor-pointer ${
                     duration === d
-                      ? 'bg-emerald-600/20 border-emerald-500 text-white shadow-sm shadow-emerald-500/20'
-                      : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
+                      ? 'bg-emerald-50 border-emerald-600 text-emerald-900'
+                      : 'bg-[#F8F9F7] border-[#E4E6E2] text-[#4B524E] hover:text-[#1C1F1D] hover:border-[#C8DDD7]'
                   }`}
                 >
                   {d}
@@ -170,8 +170,8 @@ export const AcceptModal: React.FC<AcceptModalProps> = ({
 
           {/* Joining Date Selection */}
           <div>
-            <label htmlFor="joiningDate" className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-              Expected Joining Date <span className="text-emerald-400">*</span>
+            <label htmlFor="joiningDate" className="block text-xs font-semibold uppercase tracking-wider text-[#4B524E] mb-1.5">
+              Expected Joining Date <span className="text-emerald-700">*</span>
             </label>
             <div className="relative">
               <input
@@ -180,16 +180,16 @@ export const AcceptModal: React.FC<AcceptModalProps> = ({
                 required
                 value={joiningDate}
                 onChange={(e) => setJoiningDate(e.target.value)}
-                className="w-full px-4 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-full px-4 py-2 rounded-xl bg-white border border-[#D6D9D3] text-sm text-[#1C1F1D] focus:outline-none focus:ring-2 focus:ring-emerald-600/20 focus:border-emerald-600"
               />
             </div>
           </div>
 
           {/* Workflow Notice */}
-          <div className="p-3 rounded-xl bg-blue-500/10 border border-blue-500/20 text-[11px] text-blue-300 flex items-start gap-2">
-            <FileCheck className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+          <div className="p-3 rounded-xl bg-[#EEF5F2] border border-[#C8DDD7] text-[11px] text-[#23534A] flex items-start gap-2">
+            <FileCheck className="w-4 h-4 text-[#2F6B60] shrink-0 mt-0.5" />
             <p>
-              Acceptance will generate a vector PDF offer letter featuring Company Tech branding, your configured duration, joining date, and the signature block "HR Support and Co-Founder". The PDF will be emailed to the candidate.
+              Acceptance will generate a vector PDF offer letter featuring Company Tech branding, your configured duration, joining date, and the signature block &quot;HR Support and Co-Founder&quot;. The PDF will be emailed to the candidate.
             </p>
           </div>
 
@@ -199,7 +199,7 @@ export const AcceptModal: React.FC<AcceptModalProps> = ({
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition-colors"
+              className="px-4 py-2 rounded-xl bg-[#F3F4F1] hover:bg-[#E4E6E2] text-[#4B524E] text-xs font-medium transition-colors cursor-pointer"
             >
               Cancel
             </button>
@@ -207,7 +207,7 @@ export const AcceptModal: React.FC<AcceptModalProps> = ({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-800 text-white text-xs font-bold transition-colors flex items-center gap-1.5 shadow-md shadow-emerald-600/20"
+              className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:bg-[#D6D9D3] disabled:text-[#6E7571] text-white text-xs font-semibold transition-colors flex items-center gap-1.5 shadow-xs cursor-pointer"
             >
               {isSubmitting ? (
                 <>

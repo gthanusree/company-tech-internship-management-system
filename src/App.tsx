@@ -60,7 +60,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-blue-500 selection:text-white">
+    <div className="min-h-screen bg-[#FAFAF8] text-[#1C1F1D] flex flex-col font-sans selection:bg-[#2F6B60] selection:text-white">
       {/* Universal Navigation Bar */}
       <Navbar
         activeView={activeView}

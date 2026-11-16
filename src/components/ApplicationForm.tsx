@@ -205,39 +205,39 @@ export const ApplicationForm: React.FC<ApplicationFormProps> = ({
   };
 
   return (
-    <section id="application-form-section" className="py-16 md:py-20 bg-slate-950 text-white relative">
+    <section id="application-form-section" className="py-16 md:py-20 bg-[#FAFAF8] text-[#1C1F1D] relative">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <span className="text-xs font-semibold uppercase tracking-wider text-blue-400 bg-blue-500/10 px-3 py-1 rounded-full border border-blue-500/20">
+          <span className="text-xs font-semibold uppercase tracking-wider text-[#23534A] bg-[#EEF5F2] px-3 py-1 rounded-md border border-[#C8DDD7]">
             Official Application Portal
           </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-3">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#1C1F1D] mt-3 tracking-tight">
             Company Tech Internship Application
           </h2>
-          <p className="text-slate-400 text-sm mt-2">
+          <p className="text-[#4B524E] text-sm mt-2">
             Submit your candidate profile. All applications are persisted in Firestore and processed through our automated decision pipeline.
           </p>
         </div>
 
         {/* Server Error Notification */}
         {serverError && (
-          <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/30 flex items-start gap-3 text-red-300 text-sm">
-            <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+          <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 flex items-start gap-3 text-red-800 text-sm">
+            <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
             <div>
-              <p className="font-semibold text-red-200">Application Notice</p>
+              <p className="font-semibold text-red-900">Application Notice</p>
               <p className="mt-0.5">{serverError}</p>
             </div>
           </div>
         )}
 
         {/* Form Container */}
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl shadow-blue-950/20">
+        <div className="bg-white border border-[#E4E6E2] rounded-2xl p-6 sm:p-8 shadow-sm">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* 1. Full Name */}
             <div>
-              <label htmlFor="fullName" className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                Full Name <span className="text-blue-400">*</span>
+              <label htmlFor="fullName" className="block text-xs font-semibold uppercase tracking-wider text-[#4B524E] mb-1.5">
+                Full Name <span className="text-[#2F6B60]">*</span>
               </label>
               <input
                 id="fullName"
@@ -246,19 +246,21 @@ export const ApplicationForm: React.FC<ApplicationFormProps> = ({
                 placeholder="e.g. Alex Morgan"
                 value={formData.fullName}
                 onChange={handleInputChange}
-                className={`w-full px-4 py-2.5 rounded-xl bg-slate-950 border text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${
-                  errors.fullName ? 'border-red-500 focus:ring-red-500' : 'border-slate-800 focus:border-blue-500'
+                className={`w-full px-4 py-2.5 rounded-xl bg-white border text-sm text-[#1C1F1D] placeholder-[#8A918D] focus:outline-none focus:ring-2 transition-all ${
+                  errors.fullName
+                    ? 'border-red-400 focus:ring-red-200 focus:border-red-500'
+                    : 'border-[#D6D9D3] focus:ring-[#2F6B60]/20 focus:border-[#2F6B60]'
                 }`}
               />
               {errors.fullName && (
-                <p className="mt-1 text-xs text-red-400">{errors.fullName}</p>
+                <p className="mt-1 text-xs text-red-600">{errors.fullName}</p>
               )}
             </div>
 
             {/* 2. Email Address */}
             <div>
-              <label htmlFor="email" className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                Email Address <span className="text-blue-400">*</span>
+              <label htmlFor="email" className="block text-xs font-semibold uppercase tracking-wider text-[#4B524E] mb-1.5">
+                Email Address <span className="text-[#2F6B60]">*</span>
               </label>
               <input
                 id="email"
@@ -267,23 +269,25 @@ export const ApplicationForm: React.FC<ApplicationFormProps> = ({
                 placeholder="alex.morgan@university.edu"
                 value={formData.email}
                 onChange={handleInputChange}
-                className={`w-full px-4 py-2.5 rounded-xl bg-slate-950 border text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${
-                  errors.email ? 'border-red-500 focus:ring-red-500' : 'border-slate-800 focus:border-blue-500'
+                className={`w-full px-4 py-2.5 rounded-xl bg-white border text-sm text-[#1C1F1D] placeholder-[#8A918D] focus:outline-none focus:ring-2 transition-all ${
+                  errors.email
+                    ? 'border-red-400 focus:ring-red-200 focus:border-red-500'
+                    : 'border-[#D6D9D3] focus:ring-[#2F6B60]/20 focus:border-[#2F6B60]'
                 }`}
               />
-              <p className="mt-1 text-[11px] text-slate-500">
+              <p className="mt-1 text-[11px] text-[#6E7571]">
                 Decision notifications and offer letters will be delivered to this inbox.
               </p>
               {errors.email && (
-                <p className="mt-1 text-xs text-red-400">{errors.email}</p>
+                <p className="mt-1 text-xs text-red-600">{errors.email}</p>
               )}
             </div>
 
             {/* 3. College / Institution & Year of Study */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label htmlFor="college" className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                  College / Institution <span className="text-blue-400">*</span>
+                <label htmlFor="college" className="block text-xs font-semibold uppercase tracking-wider text-[#4B524E] mb-1.5">
+                  College / Institution <span className="text-[#2F6B60]">*</span>
                 </label>
                 <input
                   id="college"
@@ -292,25 +296,27 @@ export const ApplicationForm: React.FC<ApplicationFormProps> = ({
                   placeholder="e.g. National Institute of Tech"
                   value={formData.college}
                   onChange={handleInputChange}
-                  className={`w-full px-4 py-2.5 rounded-xl bg-slate-950 border text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${
-                    errors.college ? 'border-red-500 focus:ring-red-500' : 'border-slate-800 focus:border-blue-500'
+                  className={`w-full px-4 py-2.5 rounded-xl bg-white border text-sm text-[#1C1F1D] placeholder-[#8A918D] focus:outline-none focus:ring-2 transition-all ${
+                    errors.college
+                      ? 'border-red-400 focus:ring-red-200 focus:border-red-500'
+                      : 'border-[#D6D9D3] focus:ring-[#2F6B60]/20 focus:border-[#2F6B60]'
                   }`}
                 />
                 {errors.college && (
-                  <p className="mt-1 text-xs text-red-400">{errors.college}</p>
+                  <p className="mt-1 text-xs text-red-600">{errors.college}</p>
                 )}
               </div>
 
               <div>
-                <label htmlFor="yearOfStudy" className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                  Current Year of Study <span className="text-blue-400">*</span>
+                <label htmlFor="yearOfStudy" className="block text-xs font-semibold uppercase tracking-wider text-[#4B524E] mb-1.5">
+                  Current Year of Study <span className="text-[#2F6B60]">*</span>
                 </label>
                 <select
                   id="yearOfStudy"
                   name="yearOfStudy"
                   value={formData.yearOfStudy}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl bg-white border border-[#D6D9D3] text-sm text-[#1C1F1D] focus:outline-none focus:ring-2 focus:ring-[#2F6B60]/20 focus:border-[#2F6B60] transition-all"
                 >
                   <option value="1st Year">1st Year</option>
                   <option value="2nd Year">2nd Year</option>
@@ -323,33 +329,33 @@ export const ApplicationForm: React.FC<ApplicationFormProps> = ({
 
             {/* 4. Experience Level (Fresher vs Experienced) */}
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
-                Experience Level <span className="text-blue-400">*</span>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-[#4B524E] mb-2">
+                Experience Level <span className="text-[#2F6B60]">*</span>
               </label>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <button
                   type="button"
                   onClick={() => handleExperienceChange('Fresher')}
-                  className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all text-center flex items-center justify-center gap-2 ${
+                  className={`py-3 px-4 rounded-xl border text-sm font-medium transition-colors text-center flex items-center justify-center gap-2 cursor-pointer ${
                     formData.experienceLevel === 'Fresher'
-                      ? 'bg-blue-600/20 border-blue-500 text-white font-semibold shadow-sm shadow-blue-500/20'
-                      : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
+                      ? 'bg-[#EEF5F2] border-[#2F6B60] text-[#1C1F1D] font-semibold'
+                      : 'bg-[#F8F9F7] border-[#E4E6E2] text-[#4B524E] hover:text-[#1C1F1D] hover:border-[#C8DDD7]'
                   }`}
                 >
-                  <GraduationCap className="w-4 h-4 text-blue-400" />
+                  <GraduationCap className={`w-4 h-4 ${formData.experienceLevel === 'Fresher' ? 'text-[#2F6B60]' : 'text-[#6E7571]'}`} />
                   <span>Fresher (No prior work exp)</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => handleExperienceChange('Experienced')}
-                  className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all text-center flex items-center justify-center gap-2 ${
+                  className={`py-3 px-4 rounded-xl border text-sm font-medium transition-colors text-center flex items-center justify-center gap-2 cursor-pointer ${
                     formData.experienceLevel === 'Experienced'
-                      ? 'bg-blue-600/20 border-blue-500 text-white font-semibold shadow-sm shadow-blue-500/20'
-                      : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
+                      ? 'bg-[#EEF5F2] border-[#2F6B60] text-[#1C1F1D] font-semibold'
+                      : 'bg-[#F8F9F7] border-[#E4E6E2] text-[#4B524E] hover:text-[#1C1F1D] hover:border-[#C8DDD7]'
                   }`}
                 >
-                  <Building2 className="w-4 h-4 text-indigo-400" />
+                  <Building2 className={`w-4 h-4 ${formData.experienceLevel === 'Experienced' ? 'text-[#2F6B60]' : 'text-[#6E7571]'}`} />
                   <span>Experienced (Projects / Past interns)</span>
                 </button>
               </div>
@@ -357,15 +363,15 @@ export const ApplicationForm: React.FC<ApplicationFormProps> = ({
 
             {/* 5. Role Selection Dropdown (12 Roles) */}
             <div>
-              <label htmlFor="role" className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                Internship Role Track <span className="text-blue-400">*</span>
+              <label htmlFor="role" className="block text-xs font-semibold uppercase tracking-wider text-[#4B524E] mb-1.5">
+                Internship Role Track <span className="text-[#2F6B60]">*</span>
               </label>
               <select
                 id="role"
                 name="role"
                 value={formData.role}
                 onChange={handleInputChange}
-                className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all font-medium"
+                className="w-full px-4 py-2.5 rounded-xl bg-white border border-[#D6D9D3] text-sm text-[#1C1F1D] focus:outline-none focus:ring-2 focus:ring-[#2F6B60]/20 focus:border-[#2F6B60] transition-all font-medium"
               >
                 {VALID_ROLE_NAMES.map((roleName) => (
                   <option key={roleName} value={roleName}>
@@ -374,40 +380,40 @@ export const ApplicationForm: React.FC<ApplicationFormProps> = ({
                 ))}
               </select>
               {errors.role && (
-                <p className="mt-1 text-xs text-red-400">{errors.role}</p>
+                <p className="mt-1 text-xs text-red-600">{errors.role}</p>
               )}
             </div>
 
             {/* 6. Optional Resume Upload */}
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                Resume / CV <span className="text-slate-500 font-normal">(Optional, max 5MB PDF/DOC)</span>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-[#4B524E] mb-1.5">
+                Resume / CV <span className="text-[#6E7571] font-normal">(Optional, max 5MB PDF/DOC)</span>
               </label>
 
               {formData.resumeFileName ? (
-                <div className="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800">
+                <div className="flex items-center justify-between p-3 rounded-xl bg-[#F8F9F7] border border-[#E4E6E2]">
                   <div className="flex items-center gap-2.5 truncate">
-                    <FileText className="w-5 h-5 text-blue-400 shrink-0" />
-                    <span className="text-xs text-slate-200 truncate font-mono">
+                    <FileText className="w-5 h-5 text-[#2F6B60] shrink-0" />
+                    <span className="text-xs text-[#1C1F1D] truncate font-mono">
                       {formData.resumeFileName}
                     </span>
                   </div>
                   <button
                     type="button"
                     onClick={handleRemoveResume}
-                    className="p-1 rounded-lg text-slate-400 hover:text-red-400 hover:bg-slate-800 transition-colors"
+                    className="p-1 rounded-lg text-[#6E7571] hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
                     title="Remove file"
                   >
                     <X className="w-4 h-4" />
                   </button>
                 </div>
               ) : (
-                <label className="border-2 border-dashed border-slate-800 hover:border-slate-700 bg-slate-950/50 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer transition-colors group">
-                  <Upload className="w-6 h-6 text-slate-500 group-hover:text-blue-400 transition-colors mb-2" />
-                  <span className="text-xs text-slate-300 font-medium group-hover:text-white">
+                <label className="border-2 border-dashed border-[#D6D9D3] hover:border-[#2F6B60] bg-[#F8F9F7] rounded-xl p-5 flex flex-col items-center justify-center cursor-pointer transition-colors group">
+                  <Upload className="w-6 h-6 text-[#6E7571] group-hover:text-[#2F6B60] transition-colors mb-2" />
+                  <span className="text-xs text-[#1C1F1D] font-medium">
                     Click to browse or drop your resume here
                   </span>
-                  <span className="text-[11px] text-slate-500 mt-1">
+                  <span className="text-[11px] text-[#6E7571] mt-1">
                     Supported: PDF, DOC, DOCX up to 5MB
                   </span>
                   <input
@@ -420,7 +426,7 @@ export const ApplicationForm: React.FC<ApplicationFormProps> = ({
               )}
 
               {errors.resume && (
-                <p className="mt-1 text-xs text-red-400">{errors.resume}</p>
+                <p className="mt-1 text-xs text-red-600">{errors.resume}</p>
               )}
             </div>
 
@@ -429,7 +435,7 @@ export const ApplicationForm: React.FC<ApplicationFormProps> = ({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-3.5 px-6 rounded-xl bg-blue-600 hover:bg-blue-500 disabled:bg-slate-800 disabled:text-slate-500 text-white font-semibold shadow-lg shadow-blue-600/20 transition-all flex items-center justify-center gap-2"
+                className="w-full py-3.5 px-6 rounded-xl bg-[#2F6B60] hover:bg-[#24554C] disabled:bg-[#D6D9D3] disabled:text-[#6E7571] text-white font-semibold shadow-sm transition-colors flex items-center justify-center gap-2 cursor-pointer"
               >
                 {isSubmitting ? (
                   <>
@@ -443,7 +449,7 @@ export const ApplicationForm: React.FC<ApplicationFormProps> = ({
                   </>
                 )}
               </button>
-              <p className="text-center text-[11px] text-slate-500 mt-2.5">
+              <p className="text-center text-[11px] text-[#6E7571] mt-2.5">
                 Upon submission, a unique Application ID is generated in Cloud Firestore and automated confirmation emails are dispatched.
               </p>
             </div>

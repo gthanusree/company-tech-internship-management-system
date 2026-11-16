@@ -227,22 +227,22 @@ export const AdminDashboard: React.FC = () => {
     switch (status) {
       case 'Accepted':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-            <CheckCircle2 className="w-3 h-3" />
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+            <CheckCircle2 className="w-3 h-3 text-emerald-600" />
             <span>Accepted</span>
           </span>
         );
       case 'Rejected':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-red-500/10 text-red-400 border border-red-500/20">
-            <XCircle className="w-3 h-3" />
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-red-50 text-red-700 border border-red-200">
+            <XCircle className="w-3 h-3 text-red-600" />
             <span>Rejected</span>
           </span>
         );
       default:
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">
-            <Clock className="w-3 h-3" />
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-800 border border-amber-200">
+            <Clock className="w-3 h-3 text-amber-600" />
             <span>Pending</span>
           </span>
         );
@@ -250,28 +250,28 @@ export const AdminDashboard: React.FC = () => {
   };
 
   return (
-    <section className="py-10 bg-slate-950 text-white min-h-[calc(100vh-4rem)]">
+    <section className="py-10 bg-[#FAFAF8] text-[#1C1F1D] min-h-[calc(100vh-4rem)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top Header & Auth Bar */}
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
+        <div className="bg-white border border-[#E4E6E2] rounded-2xl p-5 mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-blue-600/20 text-blue-400 border border-blue-500/30 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-[#EEF5F2] text-[#2F6B60] border border-[#C8DDD7] flex items-center justify-center shrink-0">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white flex items-center gap-2">
+              <h1 className="text-xl font-bold text-[#1C1F1D] flex flex-wrap items-center gap-2">
                 <span>Company Tech Admin Portal</span>
-                <span className="text-xs font-semibold px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                <span className="text-xs font-semibold px-2 py-0.5 rounded bg-[#EEF5F2] text-[#23534A] border border-[#C8DDD7]">
                   Admissions Dashboard
                 </span>
               </h1>
-              <p className="text-xs text-slate-400 mt-0.5">
-                Authorized Session: <span className="text-slate-200 font-mono">{activeAdminEmail}</span>
+              <p className="text-xs text-[#6E7571] mt-0.5">
+                Authorized Session: <span className="text-[#1C1F1D] font-mono">{activeAdminEmail}</span>
               </p>
               {persistenceInfo && (
                 <div className="mt-1 flex items-center gap-1.5 text-[11px]">
-                  <span className={`w-2 h-2 rounded-full ${persistenceInfo.firestoreActive ? 'bg-emerald-400 animate-pulse' : 'bg-blue-400'}`} />
-                  <span className={persistenceInfo.firestoreActive ? 'text-emerald-400' : 'text-blue-300'}>
+                  <span className={`w-2 h-2 rounded-full ${persistenceInfo.firestoreActive ? 'bg-emerald-600' : 'bg-[#2F6B60]'}`} />
+                  <span className={persistenceInfo.firestoreActive ? 'text-emerald-700 font-medium' : 'text-[#23534A]'}>
                     Storage Target: {persistenceInfo.source}
                   </span>
                 </div>
@@ -283,10 +283,10 @@ export const AdminDashboard: React.FC = () => {
           <div className="flex items-center gap-2.5 flex-wrap">
             <button
               onClick={() => setIsDemoAdmin(!isDemoAdmin)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors cursor-pointer ${
                 isDemoAdmin
-                  ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
-                  : 'bg-slate-800 border-slate-700 text-slate-400'
+                  ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
+                  : 'bg-[#F3F4F1] border-[#D6D9D3] text-[#4B524E]'
               }`}
               title="Toggle Mentor Evaluator Mode"
             >
@@ -296,7 +296,7 @@ export const AdminDashboard: React.FC = () => {
             {currentUser ? (
               <button
                 onClick={handleSignOut}
-                className="px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium flex items-center gap-1.5 border border-slate-700 transition-colors"
+                className="px-3.5 py-1.5 rounded-lg bg-[#F8F9F7] hover:bg-[#F3F4F1] text-[#1C1F1D] text-xs font-medium flex items-center gap-1.5 border border-[#D6D9D3] transition-colors cursor-pointer"
               >
                 <LogOut className="w-3.5 h-3.5" />
                 <span>Sign Out ({currentUser.displayName || currentUser.email})</span>
@@ -304,7 +304,7 @@ export const AdminDashboard: React.FC = () => {
             ) : (
               <button
                 onClick={handleGoogleSignIn}
-                className="px-3.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold flex items-center gap-1.5 shadow-md shadow-blue-600/20 transition-colors"
+                className="px-3.5 py-1.5 rounded-lg bg-[#2F6B60] hover:bg-[#24554C] text-white text-xs font-semibold flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
               >
                 <LogIn className="w-3.5 h-3.5" />
                 <span>Google Sign-In</span>
@@ -313,21 +313,21 @@ export const AdminDashboard: React.FC = () => {
 
             <button
               onClick={() => setAdminActiveTab(adminActiveTab === 'email-test' ? 'applications' : 'email-test')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 border transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 border transition-colors cursor-pointer ${
                 adminActiveTab === 'email-test'
-                  ? 'bg-blue-600 text-white border-blue-500 shadow-md shadow-blue-600/30'
-                  : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border-slate-700'
+                  ? 'bg-[#2F6B60] text-white border-[#2F6B60] shadow-xs'
+                  : 'bg-white hover:bg-[#F3F4F1] text-[#1C1F1D] border-[#D6D9D3]'
               }`}
               title="Test Email System & Provider Configuration"
             >
-              <Mail className="w-3.5 h-3.5 text-blue-400" />
+              <Mail className={`w-3.5 h-3.5 ${adminActiveTab === 'email-test' ? 'text-white' : 'text-[#2F6B60]'}`} />
               <span>Email Diagnostics</span>
             </button>
 
             <button
               onClick={fetchApplications}
               disabled={isLoading}
-              className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors"
+              className="p-1.5 rounded-lg bg-white hover:bg-[#F3F4F1] text-[#4B524E] border border-[#D6D9D3] transition-colors cursor-pointer"
               title="Refresh Firestore Applications"
             >
               <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
@@ -336,13 +336,13 @@ export const AdminDashboard: React.FC = () => {
         </div>
 
         {/* Section Navigation Tabs */}
-        <div className="flex items-center gap-2 mb-6 border-b border-slate-800 pb-3 overflow-x-auto">
+        <div className="flex items-center gap-2 mb-6 border-b border-[#E4E6E2] pb-3 overflow-x-auto">
           <button
             onClick={() => setAdminActiveTab('applications')}
-            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 transition-all cursor-pointer shrink-0 ${
+            className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 transition-colors cursor-pointer shrink-0 ${
               adminActiveTab === 'applications'
-                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
-                : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                ? 'bg-[#2F6B60] text-white shadow-xs'
+                : 'bg-white text-[#4B524E] hover:text-[#1C1F1D] border border-[#E4E6E2]'
             }`}
           >
             <Users className="w-4 h-4" />
@@ -351,15 +351,19 @@ export const AdminDashboard: React.FC = () => {
 
           <button
             onClick={() => setAdminActiveTab('email-test')}
-            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 transition-all cursor-pointer shrink-0 ${
+            className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 transition-colors cursor-pointer shrink-0 ${
               adminActiveTab === 'email-test'
-                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
-                : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                ? 'bg-[#2F6B60] text-white shadow-xs'
+                : 'bg-white text-[#4B524E] hover:text-[#1C1F1D] border border-[#E4E6E2]'
             }`}
           >
             <Mail className="w-4 h-4" />
             <span>Email Configuration Test</span>
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 font-mono">
+            <span className={`text-[10px] px-1.5 py-0.5 rounded font-mono ${
+              adminActiveTab === 'email-test'
+                ? 'bg-white/20 text-white'
+                : 'bg-[#EEF5F2] text-[#23534A] border border-[#C8DDD7]'
+            }`}>
               Resend Live Test
             </span>
           </button>
@@ -367,15 +371,15 @@ export const AdminDashboard: React.FC = () => {
 
         {/* Action Success Alert */}
         {actionSuccessMessage && (
-          <div className="mb-6 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-3 animate-in fade-in duration-200">
-            <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+          <div className="mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs flex items-center gap-3">
+            <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
             <span className="font-medium">{actionSuccessMessage}</span>
           </div>
         )}
 
         {authError && (
-          <div className="mb-6 p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 text-amber-400 shrink-0" />
+          <div className="mb-6 p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
             <span>Note on Authentication: {authError} Evaluator Mode remains enabled for full dashboard testing.</span>
           </div>
         )}
@@ -388,82 +392,139 @@ export const AdminDashboard: React.FC = () => {
         ) : (
           <>
             {/* Quick Email Status Bar */}
-            <div className="bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-md">
-              <div className="flex items-center gap-2.5 text-slate-300">
-                <div className="w-7 h-7 rounded-lg bg-blue-600/20 text-blue-400 border border-blue-500/30 flex items-center justify-center shrink-0">
+            <div className="bg-white border border-[#E4E6E2] rounded-xl px-4 py-3 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-xs">
+              <div className="flex items-center gap-2.5 text-[#4B524E]">
+                <div className="w-7 h-7 rounded-lg bg-[#EEF5F2] text-[#2F6B60] border border-[#C8DDD7] flex items-center justify-center shrink-0">
                   <Mail className="w-3.5 h-3.5" />
                 </div>
                 <div>
-                  <span className="font-semibold text-white">Email Notification System: Resend</span>
-                  <span className="text-slate-400 block sm:inline sm:ml-2 text-[11.5px]">
-                    Alert Target: <span className="font-mono text-slate-300">{activeAdminEmail}</span>
+                  <span className="font-semibold text-[#1C1F1D]">Email Notification System: Resend</span>
+                  <span className="text-[#6E7571] block sm:inline sm:ml-2 text-[11.5px]">
+                    Alert Target: <span className="font-mono text-[#1C1F1D]">{activeAdminEmail}</span>
                   </span>
                 </div>
               </div>
               <button
                 onClick={() => setAdminActiveTab('email-test')}
-                className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-blue-400 hover:text-blue-300 font-semibold border border-slate-700 flex items-center gap-1.5 self-start sm:self-auto cursor-pointer transition-colors"
+                className="px-3 py-1.5 rounded-lg bg-[#F8F9F7] hover:bg-[#EEF5F2] text-[#23534A] font-semibold border border-[#D6D9D3] flex items-center gap-1.5 self-start sm:self-auto cursor-pointer transition-colors"
               >
                 <span>Test Configuration & Delivery</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                <ArrowRight className="w-3.5 h-3.5 text-[#2F6B60]" />
               </button>
             </div>
 
-            {/* Dashboard Statistics */}
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-3.5 mb-8">
-          <div className="p-4 rounded-xl bg-slate-900 border border-slate-800">
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-slate-400 font-medium">Total Received</span>
-              <Users className="w-4 h-4 text-blue-400" />
-            </div>
-            <p className="text-2xl font-extrabold text-white mt-2">{totalApps}</p>
-          </div>
+            {/* Admin Dashboard Summary Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 mb-8">
+              <button
+                type="button"
+                onClick={() => setStatusFilter('All')}
+                className={`p-4 rounded-xl bg-white border text-left transition-colors cursor-pointer shadow-xs ${
+                  statusFilter === 'All'
+                    ? 'border-[#2F6B60] ring-1 ring-[#2F6B60]/25'
+                    : 'border-[#E4E6E2] hover:border-[#C8DDD7]'
+                }`}
+                title="Show all applications"
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs text-[#4B524E] font-semibold">Total Applications</span>
+                  <span className="w-7 h-7 rounded-lg bg-[#EEF5F2] border border-[#C8DDD7] flex items-center justify-center shrink-0">
+                    <Users className="w-4 h-4 text-[#2F6B60]" />
+                  </span>
+                </div>
+                <p className="text-2xl font-bold text-[#1C1F1D] mt-2 tabular-nums">{totalApps}</p>
+                <p className="text-[11px] text-[#6E7571] mt-1">All received submissions</p>
+              </button>
 
-          <div className="p-4 rounded-xl bg-slate-900 border border-slate-800">
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-amber-400 font-medium">Pending Review</span>
-              <Clock className="w-4 h-4 text-amber-400" />
-            </div>
-            <p className="text-2xl font-extrabold text-amber-400 mt-2">{pendingApps}</p>
-          </div>
+              <button
+                type="button"
+                onClick={() => setStatusFilter(statusFilter === 'Pending' ? 'All' : 'Pending')}
+                className={`p-4 rounded-xl bg-white border text-left transition-colors cursor-pointer shadow-xs ${
+                  statusFilter === 'Pending'
+                    ? 'border-amber-500 ring-1 ring-amber-400/30'
+                    : 'border-[#E4E6E2] hover:border-amber-300'
+                }`}
+                title="Filter by Pending Applications"
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs text-amber-800 font-semibold">Pending Applications</span>
+                  <span className="w-7 h-7 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center shrink-0">
+                    <Clock className="w-4 h-4 text-amber-600" />
+                  </span>
+                </div>
+                <p className="text-2xl font-bold text-amber-700 mt-2 tabular-nums">{pendingApps}</p>
+                <p className="text-[11px] text-[#6E7571] mt-1">
+                  {totalApps > 0 ? `${Math.round((pendingApps / totalApps) * 100)}% awaiting review` : 'Awaiting review'}
+                </p>
+              </button>
 
-          <div className="p-4 rounded-xl bg-slate-900 border border-slate-800">
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-emerald-400 font-medium">Accepted Offers</span>
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-            </div>
-            <p className="text-2xl font-extrabold text-emerald-400 mt-2">{acceptedApps}</p>
-          </div>
+              <button
+                type="button"
+                onClick={() => setStatusFilter(statusFilter === 'Accepted' ? 'All' : 'Accepted')}
+                className={`p-4 rounded-xl bg-white border text-left transition-colors cursor-pointer shadow-xs ${
+                  statusFilter === 'Accepted'
+                    ? 'border-emerald-600 ring-1 ring-emerald-500/30'
+                    : 'border-[#E4E6E2] hover:border-emerald-300'
+                }`}
+                title="Filter by Accepted Applications"
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs text-emerald-800 font-semibold">Accepted Applications</span>
+                  <span className="w-7 h-7 rounded-lg bg-emerald-50 border border-emerald-200 flex items-center justify-center shrink-0">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  </span>
+                </div>
+                <p className="text-2xl font-bold text-emerald-700 mt-2 tabular-nums">{acceptedApps}</p>
+                <p className="text-[11px] text-[#6E7571] mt-1">
+                  {totalApps > 0 ? `${Math.round((acceptedApps / totalApps) * 100)}% offers issued` : 'Offers issued'}
+                </p>
+              </button>
 
-          <div className="p-4 rounded-xl bg-slate-900 border border-slate-800">
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-red-400 font-medium">Rejected</span>
-              <XCircle className="w-4 h-4 text-red-400" />
-            </div>
-            <p className="text-2xl font-extrabold text-red-400 mt-2">{rejectedApps}</p>
-          </div>
+              <button
+                type="button"
+                onClick={() => setStatusFilter(statusFilter === 'Rejected' ? 'All' : 'Rejected')}
+                className={`p-4 rounded-xl bg-white border text-left transition-colors cursor-pointer shadow-xs ${
+                  statusFilter === 'Rejected'
+                    ? 'border-red-500 ring-1 ring-red-400/30'
+                    : 'border-[#E4E6E2] hover:border-red-300'
+                }`}
+                title="Filter by Rejected Applications"
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs text-red-700 font-semibold">Rejected Applications</span>
+                  <span className="w-7 h-7 rounded-lg bg-red-50 border border-red-200 flex items-center justify-center shrink-0">
+                    <XCircle className="w-4 h-4 text-red-600" />
+                  </span>
+                </div>
+                <p className="text-2xl font-bold text-red-700 mt-2 tabular-nums">{rejectedApps}</p>
+                <p className="text-[11px] text-[#6E7571] mt-1">
+                  {totalApps > 0 ? `${Math.round((rejectedApps / totalApps) * 100)}% concluded` : 'Concluded reviews'}
+                </p>
+              </button>
 
-          <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 col-span-2 sm:col-span-1">
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-indigo-400 font-medium">Acceptance Rate</span>
-              <Award className="w-4 h-4 text-indigo-400" />
+              <div className="p-4 rounded-xl bg-white border border-[#E4E6E2] shadow-xs sm:col-span-2 lg:col-span-1">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs text-[#23534A] font-semibold">Acceptance Rate</span>
+                  <span className="w-7 h-7 rounded-lg bg-[#EEF5F2] border border-[#C8DDD7] flex items-center justify-center shrink-0">
+                    <Award className="w-4 h-4 text-[#2F6B60]" />
+                  </span>
+                </div>
+                <p className="text-2xl font-bold text-[#2F6B60] mt-2 tabular-nums">{acceptanceRate}%</p>
+                <p className="text-[11px] text-[#6E7571] mt-1">Of total applications</p>
+              </div>
             </div>
-            <p className="text-2xl font-extrabold text-indigo-400 mt-2">{acceptanceRate}%</p>
-          </div>
-        </div>
 
         {/* Search, Filter, Sort Controls */}
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 mb-6 space-y-4">
+        <div className="bg-white border border-[#E4E6E2] rounded-2xl p-4 sm:p-5 mb-6 space-y-4 shadow-xs">
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
             {/* Search Input */}
             <div className="sm:col-span-2 relative">
-              <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
+              <Search className="w-4 h-4 text-[#6E7571] absolute left-3.5 top-3" />
               <input
                 type="text"
                 placeholder="Search by name, email, college, or application ID..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-9 pr-4 py-2 rounded-xl bg-white border border-[#D6D9D3] text-xs sm:text-sm text-[#1C1F1D] placeholder-[#8A918D] focus:outline-none focus:ring-2 focus:ring-[#2F6B60]/20 focus:border-[#2F6B60]"
               />
             </div>
 
@@ -472,7 +533,7 @@ export const AdminDashboard: React.FC = () => {
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs sm:text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 rounded-xl bg-white border border-[#D6D9D3] text-xs sm:text-sm text-[#1C1F1D] focus:outline-none focus:ring-2 focus:ring-[#2F6B60]/20 focus:border-[#2F6B60]"
               >
                 <option value="All">All Statuses</option>
                 <option value="Pending">Pending Review</option>
@@ -486,7 +547,7 @@ export const AdminDashboard: React.FC = () => {
               <select
                 value={sortOrder}
                 onChange={(e) => setSortOrder(e.target.value as any)}
-                className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs sm:text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 rounded-xl bg-white border border-[#D6D9D3] text-xs sm:text-sm text-[#1C1F1D] focus:outline-none focus:ring-2 focus:ring-[#2F6B60]/20 focus:border-[#2F6B60]"
               >
                 <option value="newest">Newest First</option>
                 <option value="oldest">Oldest First</option>
@@ -496,14 +557,14 @@ export const AdminDashboard: React.FC = () => {
           </div>
 
           {/* Role Filter Pills */}
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs text-slate-400">
-            <span className="shrink-0 text-slate-500 font-semibold mr-1">Role Filter:</span>
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs text-[#4B524E]">
+            <span className="shrink-0 text-[#6E7571] font-semibold mr-1">Role Filter:</span>
             <button
               onClick={() => setRoleFilter('All')}
-              className={`px-2.5 py-1 rounded-lg shrink-0 font-medium transition-colors ${
+              className={`px-2.5 py-1 rounded-lg shrink-0 font-medium transition-colors cursor-pointer ${
                 roleFilter === 'All'
-                  ? 'bg-blue-600 text-white font-semibold'
-                  : 'bg-slate-950 text-slate-400 hover:text-white'
+                  ? 'bg-[#2F6B60] text-white font-semibold'
+                  : 'bg-[#F3F4F1] text-[#4B524E] hover:text-[#1C1F1D] border border-[#E4E6E2]'
               }`}
             >
               All Roles ({applications.length})
@@ -514,10 +575,10 @@ export const AdminDashboard: React.FC = () => {
                 <button
                   key={r}
                   onClick={() => setRoleFilter(r)}
-                  className={`px-2.5 py-1 rounded-lg shrink-0 font-medium transition-colors ${
+                  className={`px-2.5 py-1 rounded-lg shrink-0 font-medium transition-colors cursor-pointer ${
                     roleFilter === r
-                      ? 'bg-blue-600 text-white font-semibold'
-                      : 'bg-slate-950 text-slate-400 hover:text-white'
+                      ? 'bg-[#2F6B60] text-white font-semibold'
+                      : 'bg-[#F3F4F1] text-[#4B524E] hover:text-[#1C1F1D] border border-[#E4E6E2]'
                   }`}
                 >
                   {r} ({count})
@@ -528,10 +589,10 @@ export const AdminDashboard: React.FC = () => {
         </div>
 
         {/* Applications Table */}
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+        <div className="bg-white border border-[#E4E6E2] rounded-2xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-300">
-              <thead className="bg-slate-950 text-[11px] uppercase tracking-wider text-slate-400 border-b border-slate-800">
+            <table className="w-full text-left text-xs text-[#4B524E]">
+              <thead className="bg-[#F8F9F7] text-[11px] uppercase tracking-wider text-[#6E7571] border-b border-[#E4E6E2]">
                 <tr>
                   <th className="py-3.5 px-4 font-semibold">Application ID</th>
                   <th className="py-3.5 px-4 font-semibold">Candidate</th>
@@ -542,11 +603,11 @@ export const AdminDashboard: React.FC = () => {
                   <th className="py-3.5 px-4 font-semibold text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800">
+              <tbody className="divide-y divide-[#E4E6E2]">
                 {filteredApplications.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="py-12 text-center text-slate-500">
-                      <p className="text-sm font-medium">No applications found matching your filters.</p>
+                    <td colSpan={7} className="py-12 text-center text-[#6E7571]">
+                      <p className="text-sm font-medium text-[#1C1F1D]">No applications found matching your filters.</p>
                       <p className="text-xs mt-1">Submit a new application from the candidate portal to test the workflow.</p>
                     </td>
                   </tr>
@@ -554,30 +615,30 @@ export const AdminDashboard: React.FC = () => {
                   filteredApplications.map((app) => (
                     <tr
                       key={app.applicationId}
-                      className="hover:bg-slate-800/50 transition-colors"
+                      className="hover:bg-[#F8F9F7] transition-colors"
                     >
-                      <td className="py-3 px-4 font-mono font-bold text-blue-400 whitespace-nowrap">
+                      <td className="py-3 px-4 font-mono font-bold text-[#23534A] whitespace-nowrap">
                         {app.applicationId}
                       </td>
 
                       <td className="py-3 px-4 whitespace-nowrap">
-                        <div className="font-semibold text-white">{app.fullName}</div>
-                        <div className="text-[11px] text-slate-400 font-mono">{app.email}</div>
+                        <div className="font-semibold text-[#1C1F1D]">{app.fullName}</div>
+                        <div className="text-[11px] text-[#6E7571] font-mono">{app.email}</div>
                       </td>
 
                       <td className="py-3 px-4 whitespace-nowrap">
-                        <span className="font-medium text-slate-200">{app.role}</span>
-                        <div className="text-[10px] text-slate-500">
+                        <span className="font-medium text-[#1C1F1D]">{app.role}</span>
+                        <div className="text-[10px] text-[#6E7571]">
                           {app.experienceLevel}
                         </div>
                       </td>
 
                       <td className="py-3 px-4 max-w-[180px] truncate">
-                        <span className="truncate block font-medium">{app.college}</span>
-                        <span className="text-[10px] text-slate-500 block">{app.yearOfStudy}</span>
+                        <span className="truncate block font-medium text-[#1C1F1D]">{app.college}</span>
+                        <span className="text-[10px] text-[#6E7571] block">{app.yearOfStudy}</span>
                       </td>
 
-                      <td className="py-3 px-4 text-slate-400 whitespace-nowrap">
+                      <td className="py-3 px-4 text-[#6E7571] whitespace-nowrap tabular-nums">
                         {new Date(app.createdAt).toLocaleDateString()}
                       </td>
 
@@ -590,7 +651,7 @@ export const AdminDashboard: React.FC = () => {
                           {/* View details */}
                           <button
                             onClick={() => setSelectedAppForDetail(app)}
-                            className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors"
+                            className="p-1.5 rounded-lg bg-[#F3F4F1] hover:bg-[#E4E6E2] text-[#4B524E] hover:text-[#1C1F1D] transition-colors cursor-pointer"
                             title="Inspect Profile & Audit Logs"
                           >
                             <Eye className="w-3.5 h-3.5" />
@@ -600,7 +661,7 @@ export const AdminDashboard: React.FC = () => {
                           {app.status === 'Pending' && (
                             <button
                               onClick={() => setAppToAccept(app)}
-                              className="px-2.5 py-1 rounded-lg bg-emerald-600/20 hover:bg-emerald-600 text-emerald-400 hover:text-white border border-emerald-500/30 text-[11px] font-bold transition-all"
+                              className="px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-600 text-emerald-800 hover:text-white border border-emerald-200 text-[11px] font-semibold transition-colors cursor-pointer"
                               title="Accept Application (Requires duration and joining date)"
                             >
                               Accept
@@ -611,7 +672,7 @@ export const AdminDashboard: React.FC = () => {
                           {app.status === 'Pending' && (
                             <button
                               onClick={() => setAppToReject(app)}
-                              className="px-2.5 py-1 rounded-lg bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/30 text-[11px] font-bold transition-all"
+                              className="px-2.5 py-1 rounded-lg bg-red-50 hover:bg-red-600 text-red-700 hover:text-white border border-red-200 text-[11px] font-semibold transition-colors cursor-pointer"
                               title="Reject Application (Dispatches configurable demo rejection email)"
                             >
                               Reject
@@ -622,7 +683,7 @@ export const AdminDashboard: React.FC = () => {
                           {app.status === 'Accepted' && (
                             <button
                               onClick={() => setAppForOfferLetter(app)}
-                              className="px-2.5 py-1 rounded-lg bg-blue-600/20 hover:bg-blue-600 text-blue-400 hover:text-white border border-blue-500/30 text-[11px] font-bold transition-all flex items-center gap-1"
+                              className="px-2.5 py-1 rounded-lg bg-[#EEF5F2] hover:bg-[#2F6B60] text-[#23534A] hover:text-white border border-[#C8DDD7] text-[11px] font-semibold transition-colors flex items-center gap-1 cursor-pointer"
                               title="Inspect Generated Offer Letter PDF"
                             >
                               <FileText className="w-3 h-3" />
@@ -643,58 +704,58 @@ export const AdminDashboard: React.FC = () => {
 
         {/* Detailed Application Inspection Modal */}
         {selectedAppForDetail && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl text-white relative">
-              <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/45 backdrop-blur-[2px]">
+            <div className="bg-white border border-[#E4E6E2] rounded-2xl max-w-lg w-full p-6 shadow-xl text-[#1C1F1D] relative">
+              <div className="flex items-center justify-between pb-4 border-b border-[#E4E6E2]">
                 <div className="flex items-center gap-2">
-                  <span className="font-mono text-sm font-bold text-blue-400">
+                  <span className="font-mono text-sm font-bold text-[#23534A]">
                     {selectedAppForDetail.applicationId}
                   </span>
                   {getStatusBadge(selectedAppForDetail.status)}
                 </div>
                 <button
                   onClick={() => setSelectedAppForDetail(null)}
-                  className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                  className="p-1 rounded-lg text-[#6E7571] hover:text-[#1C1F1D] hover:bg-[#F3F4F1] transition-colors cursor-pointer"
                 >
                   <XCircle className="w-5 h-5" />
                 </button>
               </div>
 
               <div className="my-5 space-y-3 text-xs">
-                <div className="grid grid-cols-2 gap-3 p-3.5 rounded-xl bg-slate-950 border border-slate-800">
+                <div className="grid grid-cols-2 gap-3 p-3.5 rounded-xl bg-[#F8F9F7] border border-[#E4E6E2]">
                   <div>
-                    <span className="text-slate-500 block">Candidate Name:</span>
-                    <span className="font-bold text-white text-sm">{selectedAppForDetail.fullName}</span>
+                    <span className="text-[#6E7571] block">Candidate Name:</span>
+                    <span className="font-bold text-[#1C1F1D] text-sm">{selectedAppForDetail.fullName}</span>
                   </div>
                   <div>
-                    <span className="text-slate-500 block">Email Address:</span>
-                    <span className="font-mono text-slate-200">{selectedAppForDetail.email}</span>
+                    <span className="text-[#6E7571] block">Email Address:</span>
+                    <span className="font-mono text-[#1C1F1D] break-all">{selectedAppForDetail.email}</span>
                   </div>
                   <div>
-                    <span className="text-slate-500 block">College / University:</span>
-                    <span className="text-slate-200">{selectedAppForDetail.college}</span>
+                    <span className="text-[#6E7571] block">College / University:</span>
+                    <span className="text-[#1C1F1D]">{selectedAppForDetail.college}</span>
                   </div>
                   <div>
-                    <span className="text-slate-500 block">Year of Study:</span>
-                    <span className="text-slate-200">{selectedAppForDetail.yearOfStudy}</span>
+                    <span className="text-[#6E7571] block">Year of Study:</span>
+                    <span className="text-[#1C1F1D]">{selectedAppForDetail.yearOfStudy}</span>
                   </div>
                   <div>
-                    <span className="text-slate-500 block">Role Track:</span>
-                    <span className="text-blue-400 font-semibold">{selectedAppForDetail.role}</span>
+                    <span className="text-[#6E7571] block">Role Track:</span>
+                    <span className="text-[#23534A] font-semibold">{selectedAppForDetail.role}</span>
                   </div>
                   <div>
-                    <span className="text-slate-500 block">Experience Level:</span>
-                    <span className="text-slate-200">{selectedAppForDetail.experienceLevel}</span>
+                    <span className="text-[#6E7571] block">Experience Level:</span>
+                    <span className="text-[#1C1F1D]">{selectedAppForDetail.experienceLevel}</span>
                   </div>
                 </div>
 
                 {/* Resume Status */}
-                <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between">
+                <div className="p-3.5 rounded-xl bg-[#F8F9F7] border border-[#E4E6E2] flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <FileText className="w-4 h-4 text-slate-400" />
+                    <FileText className="w-4 h-4 text-[#6E7571]" />
                     <div>
-                      <span className="font-medium text-white block">Submitted Resume:</span>
-                      <span className="text-[11px] text-slate-400 font-mono">
+                      <span className="font-medium text-[#1C1F1D] block">Submitted Resume:</span>
+                      <span className="text-[11px] text-[#6E7571] font-mono">
                         {selectedAppForDetail.resumeFileName || 'No resume uploaded with this application'}
                       </span>
                     </div>
@@ -703,7 +764,7 @@ export const AdminDashboard: React.FC = () => {
                     <a
                       href={selectedAppForDetail.resumeUrl}
                       download={selectedAppForDetail.resumeFileName || 'resume.pdf'}
-                      className="px-3 py-1 rounded-lg bg-blue-600/20 hover:bg-blue-600 text-blue-400 hover:text-white border border-blue-500/30 text-xs font-semibold transition-all flex items-center gap-1"
+                      className="px-3 py-1 rounded-lg bg-[#EEF5F2] hover:bg-[#2F6B60] text-[#23534A] hover:text-white border border-[#C8DDD7] text-xs font-semibold transition-colors flex items-center gap-1"
                     >
                       <Download className="w-3.5 h-3.5" />
                       <span>Download</span>
@@ -712,43 +773,43 @@ export const AdminDashboard: React.FC = () => {
                 </div>
 
                 {/* Audit & Email Log */}
-                <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1.5 text-[11px]">
-                  <span className="text-slate-400 font-bold block uppercase tracking-wider text-[10px]">
+                <div className="p-3.5 rounded-xl bg-[#F8F9F7] border border-[#E4E6E2] space-y-1.5 text-[11px]">
+                  <span className="text-[#4B524E] font-bold block uppercase tracking-wider text-[10px]">
                     Application Audit & Notification Trail
                   </span>
                   <div className="flex justify-between">
-                    <span className="text-slate-500">Submitted At:</span>
-                    <span className="text-slate-300 font-mono">
+                    <span className="text-[#6E7571]">Submitted At:</span>
+                    <span className="text-[#1C1F1D] font-mono">
                       {new Date(selectedAppForDetail.createdAt).toLocaleString()}
                     </span>
                   </div>
                   {selectedAppForDetail.decisionAt && (
                     <div className="flex justify-between">
-                      <span className="text-slate-500">Decided At:</span>
-                      <span className="text-slate-300 font-mono">
+                      <span className="text-[#6E7571]">Decided At:</span>
+                      <span className="text-[#1C1F1D] font-mono">
                         {new Date(selectedAppForDetail.decisionAt).toLocaleString()}
                       </span>
                     </div>
                   )}
                   {selectedAppForDetail.internshipDuration && (
                     <div className="flex justify-between">
-                      <span className="text-slate-500">Duration Granted:</span>
-                      <span className="text-emerald-400 font-bold">
+                      <span className="text-[#6E7571]">Duration Granted:</span>
+                      <span className="text-emerald-700 font-bold">
                         {selectedAppForDetail.internshipDuration}
                       </span>
                     </div>
                   )}
                   {selectedAppForDetail.joiningDate && (
                     <div className="flex justify-between">
-                      <span className="text-slate-500">Joining Date:</span>
-                      <span className="text-white font-medium">
+                      <span className="text-[#6E7571]">Joining Date:</span>
+                      <span className="text-[#1C1F1D] font-medium">
                         {selectedAppForDetail.joiningDate}
                       </span>
                     </div>
                   )}
-                  <div className="flex justify-between pt-1 border-t border-slate-800/80">
-                    <span className="text-slate-500">Email Delivery Log:</span>
-                    <span className="text-slate-300 font-medium">
+                  <div className="flex justify-between pt-1 border-t border-[#E4E6E2]">
+                    <span className="text-[#6E7571]">Email Delivery Log:</span>
+                    <span className="text-[#1C1F1D] font-medium">
                       {selectedAppForDetail.emailStatus || 'System Recorded'}
                     </span>
                   </div>
@@ -756,10 +817,10 @@ export const AdminDashboard: React.FC = () => {
               </div>
 
               {/* Action Buttons in Detail Modal */}
-              <div className="pt-2 flex items-center justify-between border-t border-slate-800">
+              <div className="pt-3 flex items-center justify-between border-t border-[#E4E6E2]">
                 <button
                   onClick={() => setSelectedAppForDetail(null)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium"
+                  className="px-4 py-2 rounded-xl bg-[#F3F4F1] hover:bg-[#E4E6E2] text-[#4B524E] text-xs font-medium cursor-pointer"
                 >
                   Close
                 </button>
@@ -772,7 +833,7 @@ export const AdminDashboard: React.FC = () => {
                           setAppToReject(selectedAppForDetail);
                           setSelectedAppForDetail(null);
                         }}
-                        className="px-3.5 py-2 rounded-xl bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/30 text-xs font-bold transition-all"
+                        className="px-3.5 py-2 rounded-xl bg-red-50 hover:bg-red-600 text-red-700 hover:text-white border border-red-200 text-xs font-semibold transition-colors cursor-pointer"
                       >
                         Reject
                       </button>
@@ -781,7 +842,7 @@ export const AdminDashboard: React.FC = () => {
                           setAppToAccept(selectedAppForDetail);
                           setSelectedAppForDetail(null);
                         }}
-                        className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all"
+                        className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition-colors cursor-pointer"
                       >
                         Accept & Issue Offer
                       </button>
@@ -794,7 +855,7 @@ export const AdminDashboard: React.FC = () => {
                         setAppForOfferLetter(selectedAppForDetail);
                         setSelectedAppForDetail(null);
                       }}
-                      className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all flex items-center gap-1.5"
+                      className="px-4 py-2 rounded-xl bg-[#2F6B60] hover:bg-[#24554C] text-white text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
                     >
                       <FileText className="w-3.5 h-3.5" />
                       <span>View Offer Letter</span>

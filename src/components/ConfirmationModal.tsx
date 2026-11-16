@@ -32,73 +32,73 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-2xl shadow-blue-500/10 text-white relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/45 backdrop-blur-[2px]">
+      <div className="bg-white border border-[#E4E6E2] rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-xl text-[#1C1F1D] relative">
         {/* Success Icon */}
-        <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto mb-5 shadow-lg shadow-emerald-500/10">
-          <CheckCircle2 className="w-9 h-9" />
+        <div className="w-14 h-14 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center mx-auto mb-5">
+          <CheckCircle2 className="w-8 h-8" />
         </div>
 
         <div className="text-center">
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-3 py-1 rounded-md border border-emerald-200">
             Submission Confirmed
           </span>
-          <h3 className="text-2xl font-bold text-white mt-3">
+          <h3 className="text-2xl font-bold text-[#1C1F1D] mt-3">
             Application Submitted!
           </h3>
-          <p className="text-sm text-slate-300 mt-1.5 leading-relaxed">
-            Thank you, <span className="font-semibold text-white">{application.fullName}</span>. Your application for <span className="text-blue-400 font-semibold">{application.role}</span> has been stored in Cloud Firestore.
+          <p className="text-sm text-[#4B524E] mt-1.5 leading-relaxed">
+            Thank you, <span className="font-semibold text-[#1C1F1D]">{application.fullName}</span>. Your application for <span className="text-[#23534A] font-semibold">{application.role}</span> has been stored in Cloud Firestore.
           </p>
         </div>
 
         {/* Application ID Card */}
-        <div className="mt-6 p-4 rounded-xl bg-slate-950 border border-blue-500/30 text-center">
-          <p className="text-xs uppercase tracking-wider text-slate-400 font-medium">
+        <div className="mt-6 p-4 rounded-xl bg-[#EEF5F2] border border-[#C8DDD7] text-center">
+          <p className="text-xs uppercase tracking-wider text-[#23534A] font-semibold">
             Your Unique Application ID
           </p>
           <div className="flex items-center justify-center gap-3 mt-1.5">
-            <span className="text-2xl sm:text-3xl font-mono font-extrabold text-blue-400 tracking-wide">
+            <span className="text-2xl sm:text-3xl font-mono font-bold text-[#1C1F1D] tracking-wide">
               {application.applicationId}
             </span>
             <button
               onClick={handleCopyId}
-              className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors"
+              className="p-2 rounded-lg bg-white hover:bg-[#F3F4F1] text-[#4B524E] hover:text-[#1C1F1D] border border-[#C8DDD7] transition-colors cursor-pointer"
               title="Copy ID to clipboard"
             >
-              {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+              {copied ? <Check className="w-4 h-4 text-emerald-700" /> : <Copy className="w-4 h-4" />}
             </button>
           </div>
-          <p className="text-[11px] text-slate-500 mt-1">
+          <p className="text-[11px] text-[#4B524E] mt-1.5">
             Save this ID. You will need it together with your email to track your application status.
           </p>
         </div>
 
         {/* Audit Details */}
-        <div className="mt-5 space-y-2 text-xs text-slate-300 bg-slate-950/60 p-4 rounded-xl border border-slate-800/80">
+        <div className="mt-5 space-y-2 text-xs text-[#4B524E] bg-[#F8F9F7] p-4 rounded-xl border border-[#E4E6E2]">
           <div className="flex justify-between">
-            <span className="text-slate-500">Applicant:</span>
-            <span className="font-medium text-white">{application.fullName}</span>
+            <span className="text-[#6E7571]">Applicant:</span>
+            <span className="font-medium text-[#1C1F1D]">{application.fullName}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-slate-500">Email:</span>
-            <span className="font-mono text-white">{application.email}</span>
+            <span className="text-[#6E7571]">Email:</span>
+            <span className="font-mono text-[#1C1F1D]">{application.email}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-slate-500">College:</span>
-            <span className="text-white">{application.college}</span>
+            <span className="text-[#6E7571]">College:</span>
+            <span className="text-[#1C1F1D]">{application.college}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-slate-500">Initial Status:</span>
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">
+            <span className="text-[#6E7571]">Initial Status:</span>
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-50 text-amber-800 border border-amber-200">
               {application.status}
             </span>
           </div>
-          <div className="flex justify-between items-center pt-1 border-t border-slate-800/80 text-[11px]">
-            <span className="text-slate-500 flex items-center gap-1">
-              <Mail className="w-3.5 h-3.5 text-blue-400" />
+          <div className="flex justify-between items-center pt-1.5 border-t border-[#E4E6E2] text-[11px]">
+            <span className="text-[#6E7571] flex items-center gap-1">
+              <Mail className="w-3.5 h-3.5 text-[#2F6B60]" />
               <span>Email Delivery:</span>
             </span>
-            <span className="text-emerald-400 font-medium">
+            <span className="text-emerald-700 font-medium">
               {application.emailStatus || 'Applicant Confirmation Dispatched'}
             </span>
           </div>
@@ -108,7 +108,7 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
         <div className="mt-6 flex flex-col sm:flex-row items-center gap-3">
           <button
             onClick={() => onTrackStatus(application.applicationId, application.email)}
-            className="w-full sm:w-1/2 py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm transition-colors flex items-center justify-center gap-2"
+            className="w-full sm:w-1/2 py-2.5 px-4 rounded-xl bg-[#2F6B60] hover:bg-[#24554C] text-white font-semibold text-sm transition-colors flex items-center justify-center gap-2 cursor-pointer"
           >
             <Search className="w-4 h-4" />
             <span>Track Application</span>
@@ -116,7 +116,7 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 
           <button
             onClick={onClose}
-            className="w-full sm:w-1/2 py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium text-sm transition-colors"
+            className="w-full sm:w-1/2 py-2.5 px-4 rounded-xl bg-[#F3F4F1] hover:bg-[#E4E6E2] text-[#1C1F1D] border border-[#D6D9D3] font-medium text-sm transition-colors cursor-pointer"
           >
             Done
           </button>

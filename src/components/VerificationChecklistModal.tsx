@@ -195,44 +195,44 @@ export const VerificationChecklistModal: React.FC<VerificationChecklistModalProp
   const completedCount = Object.values(checkedItems).filter(Boolean).length;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-sm animate-in fade-in duration-200 overflow-y-auto">
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-3xl w-full p-6 sm:p-8 shadow-2xl text-white my-8 relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/45 backdrop-blur-[2px] overflow-y-auto">
+      <div className="bg-white border border-[#E4E6E2] rounded-2xl max-w-3xl w-full p-6 sm:p-8 shadow-xl text-[#1C1F1D] my-8 relative">
         {/* Top Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+        <div className="flex items-center justify-between pb-4 border-b border-[#E4E6E2]">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center">
               <CheckCircle2 className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-white flex items-center gap-2">
+              <h3 className="text-lg font-bold text-[#1C1F1D] flex flex-wrap items-center gap-2">
                 <span>End-to-End Verification Checklist</span>
-                <span className="text-xs px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-semibold border border-emerald-500/20">
+                <span className="text-xs px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 font-semibold border border-emerald-200 tabular-nums">
                   {completedCount} / 20 Verified
                 </span>
               </h3>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-[#6E7571]">
                 Direct verification of all 20 checklist criteria from the assignment brief
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-1 rounded-lg text-[#6E7571] hover:text-[#1C1F1D] hover:bg-[#F3F4F1] transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Quick Test Navigation Bar */}
-        <div className="my-4 p-3 rounded-xl bg-slate-950 border border-slate-800 flex flex-wrap items-center justify-between gap-2 text-xs">
-          <span className="text-slate-400 font-medium">Quick Workflow Shortcuts:</span>
-          <div className="flex items-center gap-2">
+        <div className="my-4 p-3 rounded-xl bg-[#F8F9F7] border border-[#E4E6E2] flex flex-wrap items-center justify-between gap-2 text-xs">
+          <span className="text-[#4B524E] font-medium">Quick Workflow Shortcuts:</span>
+          <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => {
                 onClose();
                 onNavigateToApply();
               }}
-              className="px-2.5 py-1 rounded-lg bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white border border-blue-500/30 font-semibold transition-colors"
+              className="px-2.5 py-1 rounded-lg bg-[#EEF5F2] text-[#23534A] hover:bg-[#2F6B60] hover:text-white border border-[#C8DDD7] font-semibold transition-colors cursor-pointer"
             >
               1. Open Application Form
             </button>
@@ -241,7 +241,7 @@ export const VerificationChecklistModal: React.FC<VerificationChecklistModalProp
                 onClose();
                 onNavigateToAdmin();
               }}
-              className="px-2.5 py-1 rounded-lg bg-purple-600/20 text-purple-400 hover:bg-purple-600 hover:text-white border border-purple-500/30 font-semibold transition-colors"
+              className="px-2.5 py-1 rounded-lg bg-[#F3F4F1] text-[#1C1F1D] hover:bg-[#E4E6E2] border border-[#D6D9D3] font-semibold transition-colors cursor-pointer"
             >
               2. Open Admin Review
             </button>
@@ -250,7 +250,7 @@ export const VerificationChecklistModal: React.FC<VerificationChecklistModalProp
                 onClose();
                 onNavigateToTrack();
               }}
-              className="px-2.5 py-1 rounded-lg bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white border border-emerald-500/30 font-semibold transition-colors"
+              className="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-800 hover:bg-emerald-600 hover:text-white border border-emerald-200 font-semibold transition-colors cursor-pointer"
             >
               3. Open Status Tracker
             </button>
@@ -265,36 +265,36 @@ export const VerificationChecklistModal: React.FC<VerificationChecklistModalProp
               <div
                 key={item.id}
                 onClick={() => toggleItem(item.id)}
-                className={`p-3.5 rounded-xl border transition-all cursor-pointer flex items-start gap-3 ${
+                className={`p-3.5 rounded-xl border transition-colors cursor-pointer flex items-start gap-3 ${
                   isChecked
-                    ? 'bg-slate-950/70 border-slate-800 hover:border-slate-700'
-                    : 'bg-slate-950/30 border-slate-900 opacity-60'
+                    ? 'bg-[#F8F9F7] border-[#E4E6E2] hover:border-[#C8DDD7]'
+                    : 'bg-white border-[#E4E6E2] opacity-65'
                 }`}
               >
                 <button
                   type="button"
-                  className="mt-0.5 text-emerald-400 shrink-0 focus:outline-none"
+                  className="mt-0.5 text-emerald-700 shrink-0 focus:outline-none"
                 >
                   {isChecked ? (
-                    <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600" />
                   ) : (
-                    <Circle className="w-5 h-5 text-slate-600" />
+                    <Circle className="w-5 h-5 text-[#8A918D]" />
                   )}
                 </button>
 
                 <div className="flex-1 text-xs">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="font-bold text-white text-[13px]">
+                    <span className="font-bold text-[#1C1F1D] text-[13px]">
                       {item.id}. {item.title}
                     </span>
-                    <span className="text-[10px] px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-400 font-semibold">
+                    <span className="text-[10px] px-2 py-0.5 rounded bg-white border border-[#E4E6E2] text-[#4B524E] font-semibold">
                       {item.category}
                     </span>
                   </div>
-                  <p className="text-slate-300 mt-1 leading-relaxed">
+                  <p className="text-[#4B524E] mt-1 leading-relaxed">
                     {item.description}
                   </p>
-                  <p className="text-slate-500 mt-1 text-[11px] font-mono">
+                  <p className="text-[#6E7571] mt-1 text-[11px] font-mono">
                     Verification: {item.verificationMethod}
                   </p>
                 </div>
@@ -304,13 +304,13 @@ export const VerificationChecklistModal: React.FC<VerificationChecklistModalProp
         </div>
 
         {/* Modal Footer */}
-        <div className="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between">
-          <p className="text-xs text-slate-500">
-            All 20 test points implemented in Company Tech's end-to-end architecture.
+        <div className="mt-5 pt-4 border-t border-[#E4E6E2] flex items-center justify-between">
+          <p className="text-xs text-[#6E7571]">
+            All 20 test points implemented in Company Tech&apos;s end-to-end architecture.
           </p>
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition-colors"
+            className="px-4 py-2 rounded-xl bg-[#F3F4F1] hover:bg-[#E4E6E2] text-[#1C1F1D] border border-[#D6D9D3] text-xs font-semibold transition-colors cursor-pointer"
           >
             Close
           </button>
